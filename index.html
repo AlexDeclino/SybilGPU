@@ -122,6 +122,48 @@
             cursor: pointer;
         }
 
+        .main-tabs {
+            display: flex;
+            gap: 0;
+            margin-bottom: 12px;
+        }
+
+        .main-tab {
+            flex: 1;
+            padding: 10px 12px;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            color: #666;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            text-align: center;
+            margin-top: 0;
+        }
+
+        .main-tab:first-child {
+            border-right: none;
+        }
+
+        .main-tab:hover {
+            color: #999;
+        }
+
+        .main-tab.active {
+            background: #ffff00;
+            border-color: #ffff00;
+            color: #000;
+        }
+
+        .main-panel {
+            display: none;
+        }
+
+        .main-panel.active {
+            display: block;
+        }
+
         .layer-tabs {
             display: flex;
             gap: 4px;
@@ -161,6 +203,32 @@
             display: block;
         }
 
+        .text-editors {
+            margin-bottom: 8px;
+        }
+
+        .layer-text {
+            display: none;
+            width: 100%;
+            height: 160px;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            color: #fff;
+            padding: 12px;
+            font-family: 'Arial Narrow', Arial, sans-serif;
+            font-size: 14px;
+            resize: none;
+        }
+
+        .layer-text:focus {
+            outline: none;
+            border-color: #555;
+        }
+
+        .layer-text.active {
+            display: block;
+        }
+
         textarea {
             width: 100%;
             height: 160px;
@@ -178,6 +246,13 @@
         .row {
             display: flex;
             gap: 10px;
+        }
+
+        .color-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 8px;
         }
 
         .color-pick {
@@ -350,6 +425,35 @@
 
     <div class="main">
         <div class="sidebar">
+            <div class="main-tabs">
+                <button class="main-tab active" data-main="design">Design</button>
+                <button class="main-tab" data-main="export">Export</button>
+            </div>
+
+            <div class="main-panel active" data-main="design">
+                <div class="text-editors">
+                    <textarea id="text1" class="layer-text active" data-layer="1" placeholder="Layer 1 text...">
+⊛⊛
+
+#SYBIL GPU
+by
+###[declino.systems]
+
+#10 !aworldof:4!aworldof:4:h
+
+#7 
+
+⊛⊛</textarea>
+                    <textarea id="text2" class="layer-text" data-layer="2" placeholder="Layer 2 text..."></textarea>
+                    <textarea id="text3" class="layer-text" data-layer="3" placeholder="Layer 3 text..."></textarea>
+                </div>
+
+                <div class="layer-tabs">
+                    <button class="layer-tab active" data-layer="1">L1</button>
+                    <button class="layer-tab" data-layer="2">L2</button>
+                    <button class="layer-tab" data-layer="3">L3</button>
+                </div>
+
             <div class="style-buttons">
                 <div class="size-slider-wrap">
                     <input type="range" id="sizeSlider" min="1" max="10" value="5">
@@ -362,27 +466,8 @@
                 <button class="style-btn img-btn" data-toggle="c" title="Original colors">∗</button>
             </div>
 
-            <div class="layer-tabs">
-                <button class="layer-tab active" data-layer="1">Layer 1</button>
-                <button class="layer-tab" data-layer="2">Layer 2</button>
-                <button class="layer-tab" data-layer="3">Layer 3</button>
-            </div>
-
             <div class="layer-panel active" data-layer="1">
-                <textarea id="text1" placeholder="Layer 1 text...">
-⊛⊛
-
-#SYBIL GPU
-by
-###[declino.systems]
-
-#10 !aworldof:1!aworldof:1:h
-
-#7 
-
-⊛⊛</textarea>
-
-                <div class="row">
+                <div class="color-grid">
                     <div class="color-pick">
                         <label>Text</label>
                         <input type="color" id="textColor1" value="#000000">
@@ -391,43 +476,41 @@ by
                         <label>Accent</label>
                         <input type="color" id="accentColor1" value="#000000">
                     </div>
-                </div>
-
-                <div class="row">
                     <div class="color-pick">
                         <label>Stroke</label>
                         <input type="color" id="strokeColor1" value="#000000">
                     </div>
-                    <div class="select-group">
-                        <label>Stroke <span id="strokeVal1">0</span></label>
-                        <input type="range" id="strokeWidth1" min="0" max="50" value="0">
+                    <div class="color-pick">
+                        <label>Background</label>
+                        <input type="color" id="bgColor" value="#ffffff">
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="select-group">
-                        <label>Line H <span id="lineHeightVal1">100</span>%</label>
-                        <input type="range" id="lineHeight1" min="50" max="200" value="100">
-                    </div>
-                    <div class="select-group">
-                        <label>Stretch X <span id="stretchXVal1">100</span>%</label>
-                        <input type="range" id="stretchX1" min="50" max="200" value="100">
-                    </div>
-                    <div class="select-group">
-                        <label>Stretch Y <span id="stretchYVal1">100</span>%</label>
-                        <input type="range" id="stretchY1" min="50" max="200" value="100">
-                    </div>
-                    <div class="select-group">
-                        <label>Kern <span id="kernelVal1">0</span></label>
-                        <input type="range" id="kernel1" min="-20" max="50" value="0">
-                    </div>
+                <div class="select-group">
+                    <label>Stroke <span id="strokeVal1">0</span></label>
+                    <input type="range" id="strokeWidth1" min="0" max="50" value="0">
+                </div>
+
+                <div class="select-group">
+                    <label>Line H <span id="lineHeightVal1">100</span>%</label>
+                    <input type="range" id="lineHeight1" min="50" max="200" value="100">
+                </div>
+                <div class="select-group">
+                    <label>Stretch X <span id="stretchXVal1">100</span>%</label>
+                    <input type="range" id="stretchX1" min="50" max="200" value="100">
+                </div>
+                <div class="select-group">
+                    <label>Stretch Y <span id="stretchYVal1">100</span>%</label>
+                    <input type="range" id="stretchY1" min="50" max="200" value="100">
+                </div>
+                <div class="select-group">
+                    <label>Kern <span id="kernelVal1">0</span></label>
+                    <input type="range" id="kernel1" min="-20" max="50" value="0">
                 </div>
             </div>
 
             <div class="layer-panel" data-layer="2">
-                <textarea id="text2" placeholder="Layer 2 text..."></textarea>
-
-                <div class="row">
+                <div class="color-grid">
                     <div class="color-pick">
                         <label>Text</label>
                         <input type="color" id="textColor2" value="#ff0000">
@@ -436,43 +519,41 @@ by
                         <label>Accent</label>
                         <input type="color" id="accentColor2" value="#00ffff">
                     </div>
-                </div>
-
-                <div class="row">
                     <div class="color-pick">
                         <label>Stroke</label>
                         <input type="color" id="strokeColor2" value="#000000">
                     </div>
-                    <div class="select-group">
-                        <label>Stroke <span id="strokeVal2">0</span></label>
-                        <input type="range" id="strokeWidth2" min="0" max="50" value="0">
+                    <div class="color-pick">
+                        <label>Background</label>
+                        <input type="color" id="bgColor2" value="#ffffff" disabled>
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="select-group">
-                        <label>Line H <span id="lineHeightVal2">100</span>%</label>
-                        <input type="range" id="lineHeight2" min="50" max="200" value="100">
-                    </div>
-                    <div class="select-group">
-                        <label>Stretch X <span id="stretchXVal2">100</span>%</label>
-                        <input type="range" id="stretchX2" min="50" max="200" value="100">
-                    </div>
-                    <div class="select-group">
-                        <label>Stretch Y <span id="stretchYVal2">100</span>%</label>
-                        <input type="range" id="stretchY2" min="50" max="200" value="100">
-                    </div>
-                    <div class="select-group">
-                        <label>Kern <span id="kernelVal2">0</span></label>
-                        <input type="range" id="kernel2" min="-20" max="50" value="0">
-                    </div>
+                <div class="select-group">
+                    <label>Stroke <span id="strokeVal2">0</span></label>
+                    <input type="range" id="strokeWidth2" min="0" max="50" value="0">
+                </div>
+
+                <div class="select-group">
+                    <label>Line H <span id="lineHeightVal2">100</span>%</label>
+                    <input type="range" id="lineHeight2" min="50" max="200" value="100">
+                </div>
+                <div class="select-group">
+                    <label>Stretch X <span id="stretchXVal2">100</span>%</label>
+                    <input type="range" id="stretchX2" min="50" max="200" value="100">
+                </div>
+                <div class="select-group">
+                    <label>Stretch Y <span id="stretchYVal2">100</span>%</label>
+                    <input type="range" id="stretchY2" min="50" max="200" value="100">
+                </div>
+                <div class="select-group">
+                    <label>Kern <span id="kernelVal2">0</span></label>
+                    <input type="range" id="kernel2" min="-20" max="50" value="0">
                 </div>
             </div>
 
             <div class="layer-panel" data-layer="3">
-                <textarea id="text3" placeholder="Layer 3 text..."></textarea>
-
-                <div class="row">
+                <div class="color-grid">
                     <div class="color-pick">
                         <label>Text</label>
                         <input type="color" id="textColor3" value="#0000ff">
@@ -481,69 +562,68 @@ by
                         <label>Accent</label>
                         <input type="color" id="accentColor3" value="#ffff00">
                     </div>
-                </div>
-
-                <div class="row">
                     <div class="color-pick">
                         <label>Stroke</label>
                         <input type="color" id="strokeColor3" value="#000000">
                     </div>
+                    <div class="color-pick">
+                        <label>Background</label>
+                        <input type="color" id="bgColor3" value="#ffffff" disabled>
+                    </div>
+                </div>
+
+                <div class="select-group">
+                    <label>Stroke <span id="strokeVal3">0</span></label>
+                    <input type="range" id="strokeWidth3" min="0" max="50" value="0">
+                </div>
+
+                <div class="select-group">
+                    <label>Line H <span id="lineHeightVal3">100</span>%</label>
+                    <input type="range" id="lineHeight3" min="50" max="200" value="100">
+                </div>
+                <div class="select-group">
+                    <label>Stretch X <span id="stretchXVal3">100</span>%</label>
+                    <input type="range" id="stretchX3" min="50" max="200" value="100">
+                </div>
+                <div class="select-group">
+                    <label>Stretch Y <span id="stretchYVal3">100</span>%</label>
+                    <input type="range" id="stretchY3" min="50" max="200" value="100">
+                </div>
+                <div class="select-group">
+                    <label>Kern <span id="kernelVal3">0</span></label>
+                    <input type="range" id="kernel3" min="-20" max="50" value="0">
+                </div>
+                </div>
+
+                <div class="symbols" id="symbols"></div>
+            </div>
+
+            <div class="main-panel" data-main="export">
+                <div class="row">
                     <div class="select-group">
-                        <label>Stroke <span id="strokeVal3">0</span></label>
-                        <input type="range" id="strokeWidth3" min="0" max="50" value="0">
+                        <label>Frame Size</label>
+                        <select id="frameSize">
+                            <option value="1080x1440" selected>1080 × 1440</option>
+                            <option value="1080x1350">1080 × 1350</option>
+                            <option value="1080x1080">1080 × 1080</option>
+                            <option value="1080x1920">1080 × 1920</option>
+                        </select>
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="select-group">
-                        <label>Line H <span id="lineHeightVal3">100</span>%</label>
-                        <input type="range" id="lineHeight3" min="50" max="200" value="100">
+                    <div class="input-group">
+                        <label>User</label>
+                        <input type="text" id="userName" placeholder="Enter name...">
                     </div>
-                    <div class="select-group">
-                        <label>Stretch X <span id="stretchXVal3">100</span>%</label>
-                        <input type="range" id="stretchX3" min="50" max="200" value="100">
-                    </div>
-                    <div class="select-group">
-                        <label>Stretch Y <span id="stretchYVal3">100</span>%</label>
-                        <input type="range" id="stretchY3" min="50" max="200" value="100">
-                    </div>
-                    <div class="select-group">
-                        <label>Kern <span id="kernelVal3">0</span></label>
-                        <input type="range" id="kernel3" min="-20" max="50" value="0">
+                    <div class="input-group">
+                        <label>Project</label>
+                        <input type="text" id="projectName" placeholder="Enter project...">
                     </div>
                 </div>
+
+                <button id="download">Download PNG</button>
             </div>
-
-            <div class="symbols" id="symbols"></div>
-
-            <div class="row">
-                <div class="select-group">
-                    <label>Frame Size</label>
-                    <select id="frameSize">
-                        <option value="1080x1440" selected>1080 × 1440</option>
-                        <option value="1080x1350">1080 × 1350</option>
-                        <option value="1080x1080">1080 × 1080</option>
-                        <option value="1080x1920">1080 × 1920</option>
-                    </select>
-                </div>
-                <div class="color-pick">
-                    <label>Background</label>
-                    <input type="color" id="bgColor" value="#ffffff">
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="input-group">
-                    <label>User</label>
-                    <input type="text" id="userName" placeholder="Enter name...">
-                </div>
-                <div class="input-group">
-                    <label>Project</label>
-                    <input type="text" id="projectName" placeholder="Enter project...">
-                </div>
-            </div>
-
-            <button id="download">Download PNG</button>
         </div>
 
         <div class="preview">
@@ -553,23 +633,7 @@ by
         <div class="sidebar-right">
             <div class="sidebar-title">Image Library</div>
 
-            <div class="row">
-                <div class="select-group">
-                    <label>Year</label>
-                    <select id="filterYear"><option value="">All</option></select>
-                </div>
-                <div class="select-group">
-                    <label>Arc</label>
-                    <select id="filterArc"><option value="">All</option></select>
-                </div>
-                <div class="select-group">
-                    <label>Artist</label>
-                    <select id="filterArtist"><option value="">All</option></select>
-                </div>
-            </div>
-
             <div class="select-group">
-                <label>Collection</label>
                 <select id="collectionSelect"></select>
             </div>
 
@@ -589,9 +653,6 @@ by
         const collectionSelect = document.getElementById('collectionSelect');
         const collectionInfo = document.getElementById('collectionInfo');
         const downloadBtn = document.getElementById('download');
-        const filterYear = document.getElementById('filterYear');
-        const filterArc = document.getElementById('filterArc');
-        const filterArtist = document.getElementById('filterArtist');
 
         // Layer elements
         const layers = [1, 2, 3].map(i => ({
@@ -627,17 +688,28 @@ by
         // Size value 1-10 maps to SIZE_BASE - (SIZE_BASE + 9*SIZE_STEP) of canvas height
         const getSizeFromValue = (val) => SIZE_BASE + (val - 1) * SIZE_STEP;
 
+        // Main tab switching (Design/Export)
+        document.querySelectorAll('.main-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.main-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.main-panel').forEach(p => p.classList.remove('active'));
+                tab.classList.add('active');
+                document.querySelector(`.main-panel[data-main="${tab.dataset.main}"]`).classList.add('active');
+            });
+        });
+
         // Layer tab switching
         document.querySelectorAll('.layer-tab').forEach(tab => {
             tab.addEventListener('click', () => {
-                const layerNum = parseInt(tab.dataset.layer);
-                currentLayer = layerNum;
-
                 document.querySelectorAll('.layer-tab').forEach(t => t.classList.remove('active'));
                 document.querySelectorAll('.layer-panel').forEach(p => p.classList.remove('active'));
-
+                document.querySelectorAll('.layer-text').forEach(t => t.classList.remove('active'));
                 tab.classList.add('active');
+
+                const layerNum = parseInt(tab.dataset.layer);
+                currentLayer = layerNum;
                 document.querySelector(`.layer-panel[data-layer="${layerNum}"]`).classList.add('active');
+                document.querySelector(`.layer-text[data-layer="${layerNum}"]`).classList.add('active');
             });
         });
 
@@ -722,48 +794,10 @@ by
             return name.toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 8);
         }
 
-        function populateFilters() {
-            const years = [...new Set(libraryData.collections.map(c => c.year))].sort();
-            const arcs = [...new Set(libraryData.collections.map(c => c.arc))].sort((a, b) => a - b);
-            const artists = [...new Set(libraryData.collections.map(c => c.artist))].sort();
-
-            filterYear.innerHTML = '<option value="">All</option>' + years.map(y => `<option value="${y}">${y}</option>`).join('');
-            filterArc.innerHTML = '<option value="">All</option>' + arcs.map(a => `<option value="${a}">Arc ${a}</option>`).join('');
-            filterArtist.innerHTML = '<option value="">All</option>' + artists.map(a => `<option value="${a}">${a}</option>`).join('');
-        }
-
-        function filterCollections() {
-            const year = filterYear.value;
-            const arc = filterArc.value;
-            const artist = filterArtist.value;
-
-            const filtered = libraryData.collections.filter(col => {
-                if (year && col.year != year) return false;
-                if (arc && col.arc != arc) return false;
-                if (artist && col.artist !== artist) return false;
-                return true;
-            });
-
-            collectionSelect.innerHTML = filtered.map(col => {
-                const origIndex = libraryData.collections.indexOf(col);
-                return `<option value="${origIndex}">${col.name}</option>`;
-            }).join('');
-
-            if (filtered.length > 0) {
-                showCollection(parseInt(collectionSelect.value));
-            } else {
-                imageLibrary.innerHTML = '';
-                collectionInfo.textContent = '';
-            }
-        }
-
         async function loadLibrary() {
             try {
                 const response = await fetch('library.json');
                 libraryData = await response.json();
-
-                // Populate filters
-                populateFilters();
 
                 // Populate collection dropdown
                 collectionSelect.innerHTML = libraryData.collections.map((col, i) =>
@@ -831,10 +865,6 @@ by
         collectionSelect.addEventListener('change', (e) => {
             showCollection(parseInt(e.target.value));
         });
-
-        filterYear.addEventListener('change', filterCollections);
-        filterArc.addEventListener('change', filterCollections);
-        filterArtist.addEventListener('change', filterCollections);
 
         function getExportDimensions() {
             const [w, h] = frameSize.value.split('x').map(Number);
