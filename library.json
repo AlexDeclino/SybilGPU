@@ -1,0 +1,28 @@
+{
+  "collections": [
+    {
+      "name": "PeePeePooPoo",
+      "artist": "Alex",
+      "year": 2026,
+      "arc": 1,
+      "images": [
+        "library/2026/Arc1/Alex/clown-1.png",
+        "library/2026/Arc1/Alex/image 3710.png",
+        "library/2026/Arc1/Alex/image 3711.png",
+        "library/2026/Arc1/Alex/mc-test 3.png"
+      ]
+    },
+    {
+      "name": "A world of one's own",
+      "artist": "GIANXMARCO",
+      "year": 2026,
+      "arc": 2,
+      "images": [
+        "library/2026/Arc2/GIANXMARCO/TestSybil 2.png",
+        "library/2026/Arc2/GIANXMARCO/TestSybil 3.png",
+        "library/2026/Arc2/GIANXMARCO/TestSybil 4.png",
+        "library/2026/Arc2/GIANXMARCO/TestSybil 5.png"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SybilGPU</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Arial Narrow', Arial, sans-serif;
+            background: #111;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .marquee {
+            background: #ff00ff;
+            color: #000;
+            overflow: hidden;
+            white-space: nowrap;
+            padding: 8px 0;
+            font-size: 14px;
+            font-weight: normal;
+            letter-spacing: 1px;
+        }
+
+        .marquee-inner {
+            display: inline-block;
+            animation: scroll 120s linear infinite;
+        }
+
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .main {
+            flex: 1;
+            display: flex;
+            min-height: 0;
+        }
+
+        .sidebar {
+            width: 320px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            overflow-y: auto;
+            max-height: calc(100vh - 38px);
+            background: #111;
+        }
+
+        .sidebar-right {
+            width: 280px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            overflow-y: auto;
+            max-height: calc(100vh - 38px);
+            background: #111;
+        }
+
+        .sidebar-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #666;
+            margin-bottom: 4px;
+        }
+
+        .help {
+            font-size: 11px;
+            color: #666;
+            background: #1a1a1a;
+            padding: 8px;
+            border-radius: 4px;
+            line-height: 1.5;
+        }
+
+        .help code {
+            background: #333;
+            padding: 1px 4px;
+            border-radius: 2px;
+            color: #ff00ff;
+        }
+
+        .style-buttons {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 8px;
+        }
+
+        .style-btn {
+            flex: 1;
+            padding: 8px 4px;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            color: #fff;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 0;
+            text-transform: none;
+            letter-spacing: 0;
+        }
+
+        .style-btn:hover {
+            background: #333;
+            border-color: #ff00ff;
+        }
+
+        .size-slider-wrap {
+            display: flex;
+            flex: 2;
+            gap: 4px;
+        }
+
+        .size-slider-wrap input[type="range"] {
+            flex: 1;
+            height: 32px;
+            background: #333;
+            border-radius: 3px;
+            appearance: none;
+            cursor: pointer;
+        }
+
+        .size-slider-wrap input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            width: 14px;
+            height: 14px;
+            background: #ff00ff;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .layer-tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 8px;
+        }
+
+        .layer-tab {
+            flex: 1;
+            padding: 8px 12px;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            color: #666;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            text-align: center;
+            margin-top: 0;
+        }
+
+        .layer-tab:hover {
+            border-color: #555;
+            color: #999;
+        }
+
+        .layer-tab.active {
+            background: #ff00ff;
+            border-color: #ff00ff;
+            color: #fff;
+        }
+
+        .layer-panel {
+            display: none;
+        }
+
+        .layer-panel.active {
+            display: block;
+        }
+
+        textarea {
+            width: 100%;
+            height: 160px;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            color: #fff;
+            padding: 12px;
+            font-family: 'Arial Narrow', Arial, sans-serif;
+            font-size: 14px;
+            resize: none;
+        }
+
+        textarea:focus { outline: none; border-color: #555; }
+
+        .row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .color-pick {
+            flex: 1;
+        }
+
+        .color-pick label, .select-group label {
+            display: block;
+            font-size: 10px;
+            text-transform: uppercase;
+            color: #666;
+            margin-bottom: 4px;
+            letter-spacing: 0.5px;
+        }
+
+        .color-pick input[type="color"] {
+            width: 100%;
+            height: 32px;
+            border: none;
+            cursor: pointer;
+            background: none;
+        }
+
+        .select-group {
+            flex: 1;
+        }
+
+        .select-group select {
+            width: 100%;
+            padding: 8px;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            color: #fff;
+            font-family: 'Arial Narrow', Arial, sans-serif;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .input-group {
+            flex: 1;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 10px;
+            text-transform: uppercase;
+            color: #666;
+            margin-bottom: 4px;
+            letter-spacing: 0.5px;
+        }
+
+        .input-group input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            color: #fff;
+            font-family: 'Arial Narrow', Arial, sans-serif;
+            font-size: 12px;
+        }
+
+        .input-group input[type="text"]:focus {
+            outline: none;
+            border-color: #555;
+        }
+
+        .input-group input[type="text"].error {
+            border-color: #ff0000;
+            transition: border-color 0.3s ease;
+        }
+
+        .select-group input[type="range"] {
+            width: 100%;
+            height: 6px;
+            background: #333;
+            border-radius: 3px;
+            appearance: none;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+
+        .select-group input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            width: 14px;
+            height: 14px;
+            background: #ff00ff;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .symbols {
+            background: #1a1a1a;
+            padding: 8px;
+            border-radius: 4px;
+            line-height: 1.8;
+            font-size: 15px;
+            cursor: pointer;
+            user-select: none;
+            max-height: 100px;
+            overflow-y: auto;
+        }
+
+        .symbols span:hover {
+            background: #333;
+        }
+
+        .library-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        .library-grid img {
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: contain;
+            background: #1a1a1a;
+            border: 2px solid #333;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .library-grid img:hover {
+            border-color: #ff00ff;
+        }
+
+        .artist-info {
+            font-size: 10px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            font-family: 'Arial Narrow', Arial, sans-serif;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            background: #ff00ff;
+            color: #fff;
+            margin-top: 8px;
+        }
+
+        button:hover { background: #cc00cc; }
+
+        .preview {
+            flex: 1;
+            background: #0a0a0a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        #canvas {
+            max-width: 100%;
+            max-height: calc(100vh - 78px);
+            box-shadow: 0 0 40px rgba(0,0,0,0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="marquee">
+        <div class="marquee-inner" id="marqueeInner"></div>
+    </div>
+
+    <div class="main">
+        <div class="sidebar">
+            <div class="style-buttons">
+                <div class="size-slider-wrap">
+                    <input type="range" id="sizeSlider" min="1" max="10" value="5">
+                    <button class="style-btn" data-style="size" title="Apply size">S<span id="sizeVal">5</span></button>
+                </div>
+                <button class="style-btn" data-style="highlight" title="Highlight">[&nbsp;]</button>
+                <button class="style-btn" data-style="box" title="Full box">{&nbsp;}</button>
+                <button class="style-btn img-btn" data-flip="h" title="Flip horizontal">↔</button>
+                <button class="style-btn img-btn" data-flip="v" title="Flip vertical">↕</button>
+                <button class="style-btn img-btn" data-toggle="c" title="Original colors">🎨</button>
+            </div>
+
+            <div class="layer-tabs">
+                <button class="layer-tab active" data-layer="1">Layer 1</button>
+                <button class="layer-tab" data-layer="2">Layer 2</button>
+                <button class="layer-tab" data-layer="3">Layer 3</button>
+            </div>
+
+            <div class="layer-panel active" data-layer="1">
+                <textarea id="text1" placeholder="Layer 1 text...">#SYBIL
+#SYBIL
+#SYBIL</textarea>
+
+                <div class="row">
+                    <div class="color-pick">
+                        <label>Text</label>
+                        <input type="color" id="textColor1" value="#000000">
+                    </div>
+                    <div class="color-pick">
+                        <label>Accent</label>
+                        <input type="color" id="accentColor1" value="#ffdd00">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="color-pick">
+                        <label>Stroke</label>
+                        <input type="color" id="strokeColor1" value="#000000">
+                    </div>
+                    <div class="select-group">
+                        <label>Stroke <span id="strokeVal1">0</span></label>
+                        <input type="range" id="strokeWidth1" min="0" max="50" value="0">
+                    </div>
+                </div>
+            </div>
+
+            <div class="layer-panel" data-layer="2">
+                <textarea id="text2" placeholder="Layer 2 text..."></textarea>
+
+                <div class="row">
+                    <div class="color-pick">
+                        <label>Text</label>
+                        <input type="color" id="textColor2" value="#ff0000">
+                    </div>
+                    <div class="color-pick">
+                        <label>Accent</label>
+                        <input type="color" id="accentColor2" value="#00ffff">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="color-pick">
+                        <label>Stroke</label>
+                        <input type="color" id="strokeColor2" value="#000000">
+                    </div>
+                    <div class="select-group">
+                        <label>Stroke <span id="strokeVal2">0</span></label>
+                        <input type="range" id="strokeWidth2" min="0" max="50" value="0">
+                    </div>
+                </div>
+            </div>
+
+            <div class="layer-panel" data-layer="3">
+                <textarea id="text3" placeholder="Layer 3 text..."></textarea>
+
+                <div class="row">
+                    <div class="color-pick">
+                        <label>Text</label>
+                        <input type="color" id="textColor3" value="#0000ff">
+                    </div>
+                    <div class="color-pick">
+                        <label>Accent</label>
+                        <input type="color" id="accentColor3" value="#ff00ff">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="color-pick">
+                        <label>Stroke</label>
+                        <input type="color" id="strokeColor3" value="#000000">
+                    </div>
+                    <div class="select-group">
+                        <label>Stroke <span id="strokeVal3">0</span></label>
+                        <input type="range" id="strokeWidth3" min="0" max="50" value="0">
+                    </div>
+                </div>
+            </div>
+
+            <div class="symbols" id="symbols"></div>
+
+            <div class="row">
+                <div class="select-group">
+                    <label>Frame Size</label>
+                    <select id="frameSize">
+                        <option value="1080x1440" selected>1080 × 1440</option>
+                        <option value="1080x1350">1080 × 1350</option>
+                        <option value="1080x1080">1080 × 1080</option>
+                        <option value="1080x1920">1080 × 1920</option>
+                    </select>
+                </div>
+                <div class="color-pick">
+                    <label>Background</label>
+                    <input type="color" id="bgColor" value="#ffffff">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-group">
+                    <label>User</label>
+                    <input type="text" id="userName" placeholder="Enter name...">
+                </div>
+                <div class="input-group">
+                    <label>Project</label>
+                    <input type="text" id="projectName" placeholder="Enter project...">
+                </div>
+            </div>
+
+            <button id="download">Download PNG</button>
+        </div>
+
+        <div class="preview">
+            <canvas id="canvas"></canvas>
+        </div>
+
+        <div class="sidebar-right">
+            <div class="sidebar-title">Image Library</div>
+
+            <div class="select-group">
+                <label>Collection</label>
+                <select id="collectionSelect"></select>
+            </div>
+
+            <div class="artist-info" id="collectionInfo"></div>
+
+            <div class="library-grid" id="imageLibrary"></div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const bgColor = document.getElementById('bgColor');
+        const frameSize = document.getElementById('frameSize');
+        const symbols = document.getElementById('symbols');
+        const imageLibrary = document.getElementById('imageLibrary');
+        const collectionSelect = document.getElementById('collectionSelect');
+        const collectionInfo = document.getElementById('collectionInfo');
+        const downloadBtn = document.getElementById('download');
+
+        // Layer elements
+        const layers = [1, 2, 3].map(i => ({
+            text: document.getElementById(`text${i}`),
+            textColor: document.getElementById(`textColor${i}`),
+            accentColor: document.getElementById(`accentColor${i}`),
+            strokeColor: document.getElementById(`strokeColor${i}`),
+            strokeWidth: document.getElementById(`strokeWidth${i}`)
+        }));
+
+        let currentLayer = 1;
+        let libraryData = null;
+        let allImages = {}; // { "collectionId:index": { img, path } }
+
+        // Layer tab switching
+        document.querySelectorAll('.layer-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const layerNum = parseInt(tab.dataset.layer);
+                currentLayer = layerNum;
+
+                document.querySelectorAll('.layer-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.layer-panel').forEach(p => p.classList.remove('active'));
+
+                tab.classList.add('active');
+                document.querySelector(`.layer-panel[data-layer="${layerNum}"]`).classList.add('active');
+            });
+        });
+
+        // Size slider display
+        const sizeSlider = document.getElementById('sizeSlider');
+        const sizeVal = document.getElementById('sizeVal');
+        sizeSlider.addEventListener('input', () => {
+            sizeVal.textContent = sizeSlider.value;
+        });
+
+        // Style buttons - wrap selected text with syntax
+        document.querySelectorAll('.style-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const textEl = layers[currentLayer - 1].text;
+                const start = textEl.selectionStart;
+                const end = textEl.selectionEnd;
+                const text = textEl.value;
+                const selected = text.slice(start, end);
+
+                // Handle image modifier buttons (flip, color)
+                const flip = btn.dataset.flip;
+                const toggle = btn.dataset.toggle;
+                if (flip || toggle) {
+                    // Find image reference at cursor
+                    const imgRegex = /![a-z0-9]+:\d+(?::[hvc]+)?/g;
+                    let match;
+                    while ((match = imgRegex.exec(text)) !== null) {
+                        if (start >= match.index && start <= match.index + match[0].length) {
+                            const imgRef = match[0];
+                            const parts = imgRef.split(':');
+                            const baseRef = parts[0] + ':' + parts[1];
+                            let mods = parts[2] || '';
+
+                            const mod = flip || toggle;
+                            // Toggle modifier
+                            if (mods.includes(mod)) {
+                                mods = mods.replace(mod, '');
+                            } else {
+                                mods += mod;
+                            }
+                            // Normalize order: c, h, v
+                            let normalized = '';
+                            if (mods.includes('c')) normalized += 'c';
+                            if (mods.includes('h')) normalized += 'h';
+                            if (mods.includes('v')) normalized += 'v';
+
+                            const newRef = normalized ? `${baseRef}:${normalized}` : baseRef;
+                            textEl.value = text.slice(0, match.index) + newRef + text.slice(match.index + imgRef.length);
+                            textEl.focus();
+                            render();
+                            return;
+                        }
+                    }
+                    return;
+                }
+
+                if (!selected) return; // Nothing selected
+
+                let wrapped;
+                const style = btn.dataset.style;
+                const isFullLine = start === 0 || text[start - 1] === '\n';
+                const endsLine = end === text.length || text[end] === '\n';
+
+                if (style === 'size') {
+                    const size = sizeSlider.value;
+                    wrapped = isFullLine && endsLine ? `#${size} ${selected}` : `#${size}(${selected})`;
+                } else if (style === 'highlight') {
+                    wrapped = `[${selected}]`;
+                } else if (style === 'box') {
+                    wrapped = `{${selected}}`;
+                }
+
+                textEl.value = text.slice(0, start) + wrapped + text.slice(end);
+                textEl.focus();
+                textEl.selectionStart = start;
+                textEl.selectionEnd = start + wrapped.length;
+                render();
+            });
+        });
+
+        function getCollectionId(name) {
+            return name.toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 8);
+        }
+
+        async function loadLibrary() {
+            try {
+                const response = await fetch('library.json');
+                libraryData = await response.json();
+
+                // Populate collection dropdown
+                collectionSelect.innerHTML = libraryData.collections.map((col, i) =>
+                    `<option value="${i}">${col.name}</option>`
+                ).join('');
+
+                // Load ALL images from all collections
+                for (const col of libraryData.collections) {
+                    const colId = getCollectionId(col.name);
+                    for (let i = 0; i < col.images.length; i++) {
+                        const src = col.images[i];
+                        const img = await new Promise((resolve) => {
+                            const image = new Image();
+                            image.onload = () => resolve(image);
+                            image.onerror = () => resolve(null);
+                            image.src = src;
+                        });
+                        if (img) {
+                            allImages[`${colId}:${i + 1}`] = { img, path: src };
+                        }
+                    }
+                }
+
+                // Show first collection
+                showCollection(0);
+            } catch (e) {
+                console.error('Failed to load library:', e);
+            }
+        }
+
+        function showCollection(index) {
+            const col = libraryData.collections[index];
+            const colId = getCollectionId(col.name);
+
+            collectionInfo.textContent = `${col.artist} · ${col.year} · Arc ${col.arc}`;
+
+            // Display thumbnails
+            imageLibrary.innerHTML = '';
+            col.images.forEach((src, i) => {
+                const imageRef = `${colId}:${i + 1}`;
+                const imgData = allImages[imageRef];
+                if (!imgData) return;
+
+                const thumb = document.createElement('img');
+                thumb.src = src;
+                thumb.title = `!${imageRef}`;
+                thumb.onclick = () => {
+                    const textEl = layers[currentLayer - 1].text;
+                    const pos = textEl.selectionStart;
+                    const text = textEl.value;
+                    textEl.value = text.slice(0, pos) + `!${imageRef}` + text.slice(pos);
+                    textEl.focus();
+                    render();
+                };
+                imageLibrary.appendChild(thumb);
+            });
+
+            render();
+        }
+
+        collectionSelect.addEventListener('change', (e) => {
+            showCollection(parseInt(e.target.value));
+        });
+
+        function getExportDimensions() {
+            const [w, h] = frameSize.value.split('x').map(Number);
+            return { width: w, height: h };
+        }
+
+        function recolorImage(img, color) {
+            const tempCanvas = document.createElement('canvas');
+            const tempCtx = tempCanvas.getContext('2d');
+            tempCanvas.width = img.width;
+            tempCanvas.height = img.height;
+            tempCtx.drawImage(img, 0, 0);
+
+            const imageData = tempCtx.getImageData(0, 0, tempCanvas.width, tempCanvas.height);
+            const data = imageData.data;
+            const r = parseInt(color.slice(1, 3), 16);
+            const g = parseInt(color.slice(3, 5), 16);
+            const b = parseInt(color.slice(5, 7), 16);
+
+            for (let i = 0; i < data.length; i += 4) {
+                if (data[i + 3] > 0) {
+                    data[i] = r;
+                    data[i + 1] = g;
+                    data[i + 2] = b;
+                }
+            }
+
+            tempCtx.putImageData(imageData, 0, 0);
+            return tempCanvas;
+        }
+
+        function renderLayer(layerIndex, w, h) {
+            const layer = layers[layerIndex];
+
+            // Set round stroke joins to prevent pointy spikes
+            ctx.lineJoin = 'round';
+            ctx.lineCap = 'round';
+            ctx.miterLimit = 2;
+
+            const lines = layer.text.value.split('\n');
+            let y = 0;
+            const stroke = parseInt(layer.strokeWidth.value);
+
+            // Size value 1-10 maps to 0.02 - 0.15 of canvas height
+            const getSizeFromValue = (val) => 0.02 + (val - 1) * 0.0144;
+
+            lines.forEach((line) => {
+                // Check for standalone image line: !colId:N or !colId:N:mods (c=color, h=flipH, v=flipV)
+                const imgOnlyMatch = line.match(/^!([a-z0-9]+:\d+)(?::([chv]+))?$/);
+                if (imgOnlyMatch) {
+                    const imageRef = imgOnlyMatch[1];
+                    const mods = imgOnlyMatch[2] || '';
+                    const keepColor = mods.includes('c');
+                    const flipH = mods.includes('h');
+                    const flipV = mods.includes('v');
+                    const imgData = allImages[imageRef];
+                    if (imgData) {
+                        const drawImg = keepColor ? imgData.img : recolorImage(imgData.img, layer.textColor.value);
+                        const maxH = h * 0.2;
+                        const maxW = w * 0.6;
+                        const scale = Math.min(maxW / imgData.img.width, maxH / imgData.img.height);
+                        const imgW = imgData.img.width * scale;
+                        const imgH = imgData.img.height * scale;
+                        const drawX = (w - imgW) / 2;
+
+                        ctx.save();
+                        if (flipH || flipV) {
+                            ctx.translate(drawX + imgW / 2, y + imgH / 2);
+                            ctx.scale(flipH ? -1 : 1, flipV ? -1 : 1);
+                            ctx.drawImage(drawImg, -imgW / 2, -imgH / 2, imgW, imgH);
+                        } else {
+                            ctx.drawImage(drawImg, drawX, y, imgW, imgH);
+                        }
+                        ctx.restore();
+                        y += imgH + h * 0.02;
+                    }
+                    return;
+                }
+
+                // Determine default size from line start
+                // Supports: #N text (N=1-10), # text (large), ## text (medium), ### text (small)
+                let defaultSizeValue = 5; // medium default
+                let text = line;
+
+                const numericSizeMatch = line.match(/^#(\d+)\s+(.*)$/);
+                if (numericSizeMatch) {
+                    defaultSizeValue = parseInt(numericSizeMatch[1]);
+                    text = numericSizeMatch[2];
+                } else if (line.startsWith('###')) {
+                    defaultSizeValue = 3;
+                    text = line.slice(3);
+                } else if (line.startsWith('##')) {
+                    defaultSizeValue = 5;
+                    text = line.slice(2);
+                } else if (line.startsWith('#')) {
+                    defaultSizeValue = 8;
+                    text = line.slice(1);
+                }
+
+                const defaultLineHeight = h * getSizeFromValue(defaultSizeValue);
+                const defaultFontSize = defaultLineHeight * 0.85;
+
+                // Handle full-line highlight box
+                const fullHighlight = text.match(/^\{(.+)\}$/);
+                if (fullHighlight) {
+                    text = fullHighlight[1];
+                    ctx.font = `${defaultFontSize}px "Arial Narrow", Arial, sans-serif`;
+                    const tw = ctx.measureText(text).width;
+
+                    ctx.fillStyle = layer.accentColor.value;
+                    const boxPad = defaultLineHeight * 0.15;
+                    ctx.fillRect((w - tw) / 2 - boxPad * 2, y - boxPad, tw + boxPad * 4, defaultLineHeight);
+
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'top';
+                    if (stroke > 0) {
+                        ctx.strokeStyle = layer.strokeColor.value;
+                        ctx.lineWidth = stroke;
+                        ctx.strokeText(text, w / 2, y);
+                    }
+                    ctx.fillStyle = bgColor.value;
+                    ctx.fillText(text, w / 2, y);
+
+                    y += defaultLineHeight + h * 0.01;
+                    return;
+                }
+
+                // Parse parts: inline sizes #N(text), sized highlights #N([text]), highlights [text], images !colId:N:mods
+                const partRegex = /(#(\d+)\(\[[^\]]+\]\)|#(\d+)\([^)]+\)|###\(\[[^\]]+\]\)|##\(\[[^\]]+\]\)|#\(\[[^\]]+\]\)|###\([^)]+\)|##\([^)]+\)|#\([^)]+\)|\[[^\]]+\]|![a-z0-9]+:\d+(?::[chv]+)?)/g;
+                const parts = [];
+                let lastIndex = 0;
+                let match;
+
+                while ((match = partRegex.exec(text)) !== null) {
+                    if (match.index > lastIndex) {
+                        parts.push({ type: 'text', content: text.slice(lastIndex, match.index), sizeValue: defaultSizeValue });
+                    }
+                    const m = match[0];
+
+                    // #N([text]) - numeric sized highlight
+                    const numHighlight = m.match(/^#(\d+)\(\[([^\]]+)\]\)$/);
+                    if (numHighlight) {
+                        parts.push({ type: 'highlight', content: numHighlight[2], sizeValue: parseInt(numHighlight[1]) });
+                    }
+                    // #N(text) - numeric sized text
+                    else if (m.match(/^#(\d+)\([^)]+\)$/)) {
+                        const numText = m.match(/^#(\d+)\(([^)]+)\)$/);
+                        parts.push({ type: 'text', content: numText[2], sizeValue: parseInt(numText[1]) });
+                    }
+                    // Legacy ###([text])
+                    else if (m.startsWith('###([')) {
+                        parts.push({ type: 'highlight', content: m.slice(5, -2), sizeValue: 3 });
+                    } else if (m.startsWith('##([')) {
+                        parts.push({ type: 'highlight', content: m.slice(4, -2), sizeValue: 5 });
+                    } else if (m.startsWith('#([')) {
+                        parts.push({ type: 'highlight', content: m.slice(3, -2), sizeValue: 8 });
+                    }
+                    // Legacy ###(text)
+                    else if (m.startsWith('###(')) {
+                        parts.push({ type: 'text', content: m.slice(4, -1), sizeValue: 3 });
+                    } else if (m.startsWith('##(')) {
+                        parts.push({ type: 'text', content: m.slice(3, -1), sizeValue: 5 });
+                    } else if (m.startsWith('#(')) {
+                        parts.push({ type: 'text', content: m.slice(2, -1), sizeValue: 8 });
+                    } else if (m.startsWith('[')) {
+                        parts.push({ type: 'highlight', content: m.slice(1, -1), sizeValue: defaultSizeValue });
+                    } else if (m.startsWith('!')) {
+                        const imgParts = m.slice(1).split(':');
+                        const ref = imgParts[0] + ':' + imgParts[1];
+                        const mods = imgParts[2] || '';
+                        parts.push({ type: 'image', ref, mods, sizeValue: defaultSizeValue });
+                    }
+                    lastIndex = partRegex.lastIndex;
+                }
+                if (lastIndex < text.length) {
+                    parts.push({ type: 'text', content: text.slice(lastIndex), sizeValue: defaultSizeValue });
+                }
+
+                // Find max line height for this line
+                let maxLineHeight = defaultLineHeight;
+                parts.forEach(p => {
+                    const lh = h * getSizeFromValue(p.sizeValue);
+                    if (lh > maxLineHeight) maxLineHeight = lh;
+                });
+
+                // Calculate total width
+                let totalWidth = 0;
+                parts.forEach(p => {
+                    const lineHeight = h * getSizeFromValue(p.sizeValue);
+                    const fontSize = lineHeight * 0.85;
+                    ctx.font = `${fontSize}px "Arial Narrow", Arial, sans-serif`;
+
+                    if (p.type === 'image') {
+                        const imgData = allImages[p.ref];
+                        if (imgData) {
+                            const scale = lineHeight / imgData.img.height;
+                            totalWidth += imgData.img.width * scale + 4;
+                        }
+                    } else {
+                        totalWidth += ctx.measureText(p.content).width + (p.type === 'highlight' ? lineHeight * 0.2 : 0);
+                    }
+                });
+
+                let x = (w - totalWidth) / 2;
+                ctx.textBaseline = 'top';
+
+                // Render parts
+                parts.forEach(p => {
+                    const lineHeight = h * getSizeFromValue(p.sizeValue);
+                    const fontSize = lineHeight * 0.85;
+                    const yOffset = (maxLineHeight - lineHeight) / 2; // Vertically center smaller text
+                    ctx.font = `${fontSize}px "Arial Narrow", Arial, sans-serif`;
+
+                    if (p.type === 'image') {
+                        const imgData = allImages[p.ref];
+                        if (imgData) {
+                            const keepColor = p.mods && p.mods.includes('c');
+                            const flipH = p.mods && p.mods.includes('h');
+                            const flipV = p.mods && p.mods.includes('v');
+                            const drawImg = keepColor ? imgData.img : recolorImage(imgData.img, layer.textColor.value);
+                            const scale = lineHeight / imgData.img.height;
+                            const imgW = imgData.img.width * scale;
+
+                            ctx.save();
+                            if (flipH || flipV) {
+                                ctx.translate(x + imgW / 2, y + yOffset + lineHeight / 2);
+                                ctx.scale(flipH ? -1 : 1, flipV ? -1 : 1);
+                                ctx.drawImage(drawImg, -imgW / 2, -lineHeight / 2, imgW, lineHeight);
+                            } else {
+                                ctx.drawImage(drawImg, x, y + yOffset, imgW, lineHeight);
+                            }
+                            ctx.restore();
+                            x += imgW + 4;
+                        }
+                    } else if (p.type === 'highlight') {
+                        const tw = ctx.measureText(p.content).width;
+                        ctx.fillStyle = layer.accentColor.value;
+                        ctx.fillRect(x - 3, y + yOffset - 2, tw + 6, lineHeight);
+                        ctx.textAlign = 'left';
+                        if (stroke > 0) {
+                            ctx.strokeStyle = layer.strokeColor.value;
+                            ctx.lineWidth = stroke;
+                            ctx.strokeText(p.content, x, y + yOffset);
+                        }
+                        ctx.fillStyle = bgColor.value;
+                        ctx.fillText(p.content, x, y + yOffset);
+                        x += tw + lineHeight * 0.2;
+                    } else {
+                        const tw = ctx.measureText(p.content).width;
+                        ctx.textAlign = 'left';
+                        if (stroke > 0) {
+                            ctx.strokeStyle = layer.strokeColor.value;
+                            ctx.lineWidth = stroke;
+                            ctx.strokeText(p.content, x, y + yOffset);
+                        }
+                        ctx.fillStyle = layer.textColor.value;
+                        ctx.fillText(p.content, x, y + yOffset);
+                        x += tw;
+                    }
+                });
+
+                y += maxLineHeight + h * 0.005;
+            });
+        }
+
+        function render() {
+            const { width: exportW, height: exportH } = getExportDimensions();
+            const w = exportW;
+            const h = exportH;
+
+            canvas.width = w;
+            canvas.height = h;
+
+            ctx.fillStyle = bgColor.value;
+            ctx.fillRect(0, 0, w, h);
+
+            // Render all 3 layers (layer 1 at bottom, layer 3 on top)
+            for (let i = 0; i < 3; i++) {
+                renderLayer(i, w, h);
+            }
+        }
+
+        function download() {
+            const userName = document.getElementById('userName');
+            const projectName = document.getElementById('projectName');
+            const user = userName.value.trim().toLowerCase();
+            const project = projectName.value.trim().toLowerCase();
+
+            // Validate
+            let valid = true;
+            userName.classList.remove('error');
+            projectName.classList.remove('error');
+
+            if (!user) {
+                userName.classList.add('error');
+                setTimeout(() => userName.classList.remove('error'), 2000);
+                valid = false;
+            }
+            if (!project) {
+                projectName.classList.add('error');
+                setTimeout(() => projectName.classList.remove('error'), 2000);
+                valid = false;
+            }
+
+            if (!valid) return;
+
+            // Format: sybil-user_project-randomnumber
+            const randomNum = Math.floor(Math.random() * 1000000);
+            const filename = `sybil-${user}_${project}-${randomNum}.png`;
+
+            const link = document.createElement('a');
+            link.download = filename;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+
+        // Load symbols from JSON
+        async function loadSymbols() {
+            try {
+                const response = await fetch('symbols.json');
+                const data = await response.json();
+                symbols.innerHTML = data.symbols.map(s => `<span>${s}</span>`).join(' ');
+            } catch (e) {
+                console.error('Failed to load symbols:', e);
+            }
+        }
+
+        symbols.addEventListener('click', (e) => {
+            if (e.target.tagName === 'SPAN') {
+                const textEl = layers[currentLayer - 1].text;
+                const pos = textEl.selectionStart;
+                const text = textEl.value;
+                textEl.value = text.slice(0, pos) + e.target.textContent + text.slice(pos);
+                textEl.focus();
+                textEl.selectionStart = textEl.selectionEnd = pos + 1;
+                render();
+            }
+        });
+
+        loadSymbols();
+
+        // Add event listeners for all layer controls
+        layers.forEach((layer, i) => {
+            layer.text.addEventListener('input', render);
+            layer.textColor.addEventListener('input', render);
+            layer.accentColor.addEventListener('input', render);
+            layer.strokeColor.addEventListener('input', render);
+            layer.strokeWidth.addEventListener('input', () => {
+                document.getElementById(`strokeVal${i + 1}`).textContent = layer.strokeWidth.value;
+                render();
+            });
+        });
+
+        bgColor.addEventListener('input', render);
+        frameSize.addEventListener('change', render);
+        downloadBtn.addEventListener('click', download);
+
+        loadLibrary();
+
+        // Marquee text with slight random letter sizes
+        const marqueeText = 'SYBIL GRAPHICS PROCESSING UNIT ⌂ ';
+        const marqueeInner = document.getElementById('marqueeInner');
+        const fullText = marqueeText.repeat(20);
+
+        let html = '';
+        for (let i = 0; i < fullText.length; i++) {
+            const char = fullText[i];
+            const sizeVariation = 0.85 + Math.random() * 0.3;
+            if (char === ' ') {
+                html += ' ';
+            } else {
+                html += `<span style="font-size: ${sizeVariation}em">${char}</span>`;
+            }
+        }
+        marqueeInner.innerHTML = html;
+    </script>
+</body>
+</html>
