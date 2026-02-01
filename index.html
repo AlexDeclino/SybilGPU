@@ -17,7 +17,7 @@
         }
 
         .marquee {
-            background: #ff00ff;
+            background: #ffff00;
             color: #000;
             overflow: hidden;
             white-space: nowrap;
@@ -95,7 +95,7 @@
 
         .style-btn:hover {
             background: #333;
-            border-color: #ff00ff;
+            border-color: #ffff00;
         }
 
         .size-slider-wrap {
@@ -117,7 +117,7 @@
             appearance: none;
             width: 14px;
             height: 14px;
-            background: #ff00ff;
+            background: #ffff00;
             border-radius: 50%;
             cursor: pointer;
         }
@@ -148,9 +148,9 @@
         }
 
         .layer-tab.active {
-            background: #ff00ff;
-            border-color: #ff00ff;
-            color: #fff;
+            background: #ffff00;
+            border-color: #ffff00;
+            color: #000;
         }
 
         .layer-panel {
@@ -263,7 +263,7 @@
             appearance: none;
             width: 14px;
             height: 14px;
-            background: #ff00ff;
+            background: #ffff00;
             border-radius: 50%;
             cursor: pointer;
         }
@@ -301,7 +301,44 @@
         }
 
         .library-grid img:hover {
-            border-color: #ff00ff;
+            border-color: #ffff00;
+        }
+
+        .video-container {
+            margin-top: 16px;
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16/9;
+            overflow: hidden;
+        }
+
+        .video-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            filter: grayscale(100%) contrast(1.4) brightness(0.9);
+            mix-blend-mode: luminosity;
+        }
+
+        .video-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                repeating-linear-gradient(
+                    0deg,
+                    rgba(0,0,0,0.1) 0px,
+                    rgba(0,0,0,0.1) 1px,
+                    transparent 1px,
+                    transparent 3px
+                ),
+                url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            opacity: 0.15;
+            pointer-events: none;
+            mix-blend-mode: overlay;
         }
 
         .artist-info {
@@ -320,12 +357,12 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             cursor: pointer;
-            background: #ff00ff;
-            color: #fff;
+            background: #ffff00;
+            color: #000;
             margin-top: 8px;
         }
 
-        button:hover { background: #cc00cc; }
+        button:hover { background: #cccc00; }
 
         .preview {
             flex: 1;
@@ -442,7 +479,7 @@ by
                     </div>
                     <div class="color-pick">
                         <label>Accent</label>
-                        <input type="color" id="accentColor3" value="#ff00ff">
+                        <input type="color" id="accentColor3" value="#ffff00">
                     </div>
                 </div>
 
@@ -505,6 +542,14 @@ by
             <div class="artist-info" id="collectionInfo"></div>
 
             <div class="library-grid" id="imageLibrary"></div>
+
+            <div class="video-container">
+                <iframe
+                    src="https://www.youtube-nocookie.com/embed/videoseries?list=PLiSxK4vBTUcS5C6YZCv5OZ7VRH3vxbr1o&autoplay=1&mute=1&shuffle=1&loop=1&vq=small&rel=0&modestbranding=1"
+                    allow="autoplay; encrypted-media"
+                    allowfullscreen>
+                </iframe>
+            </div>
         </div>
     </div>
 
@@ -1065,22 +1110,10 @@ by
 
         loadLibrary();
 
-        // Marquee text with slight random letter sizes
-        const marqueeText = 'SYBIL GRAPHICS PROCESSING UNIT ⌂ ';
+        // Marquee text
+        const marqueeText = 'SYBIL GRAPHICS PROCESSING UNIT ★★★ ';
         const marqueeInner = document.getElementById('marqueeInner');
-        const fullText = marqueeText.repeat(20);
-
-        let html = '';
-        for (let i = 0; i < fullText.length; i++) {
-            const char = fullText[i];
-            const sizeVariation = 0.85 + Math.random() * 0.3;
-            if (char === ' ') {
-                html += ' ';
-            } else {
-                html += `<span style="font-size: ${sizeVariation}em">${char}</span>`;
-            }
-        }
-        marqueeInner.innerHTML = html;
+        marqueeInner.textContent = marqueeText.repeat(20);
     </script>
 </body>
 </html>
