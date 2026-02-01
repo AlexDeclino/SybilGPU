@@ -6,22 +6,29 @@
       "year": 2026,
       "arc": 1,
       "images": [
-        "library/2026/Arc1/Alex/clown-1.png",
-        "library/2026/Arc1/Alex/image 3710.png",
-        "library/2026/Arc1/Alex/image 3711.png",
-        "library/2026/Arc1/Alex/mc-test 3.png"
+        "library/2026/Arc1/Alex/PeePeePooPoo/Alex1.png",
+        "library/2026/Arc1/Alex/PeePeePooPoo/Alex2.png",
+        "library/2026/Arc1/Alex/PeePeePooPoo/Alex3.png",
+        "library/2026/Arc1/Alex/PeePeePooPoo/Alex4.png"
       ]
     },
     {
-      "name": "A world of one's own",
+      "name": "Aworldofonesown",
       "artist": "GIANXMARCO",
       "year": 2026,
       "arc": 2,
       "images": [
-        "library/2026/Arc2/GIANXMARCO/TestSybil 2.png",
-        "library/2026/Arc2/GIANXMARCO/TestSybil 3.png",
-        "library/2026/Arc2/GIANXMARCO/TestSybil 4.png",
-        "library/2026/Arc2/GIANXMARCO/TestSybil 5.png"
+        "library/2026/Arc2/GIANXMARCO/Aworldofonesown/Gian1.png",
+        "library/2026/Arc2/GIANXMARCO/Aworldofonesown/Gian2.png",
+        "library/2026/Arc2/GIANXMARCO/Aworldofonesown/Gian3.png",
+        "library/2026/Arc2/GIANXMARCO/Aworldofonesown/Gian4.png",
+        "library/2026/Arc2/GIANXMARCO/Aworldofonesown/Gian5.png",
+        "library/2026/Arc2/GIANXMARCO/Aworldofonesown/Gian6.png",
+        "library/2026/Arc2/GIANXMARCO/Aworldofonesown/Gian7.png",
+        "library/2026/Arc2/GIANXMARCO/Aworldofonesown/Gian8.png",
+        "library/2026/Arc2/GIANXMARCO/Aworldofonesown/Gian9.png",
+        "library/2026/Arc2/GIANXMARCO/Aworldofonesown/Gian10.png",
+        "library/2026/Arc2/GIANXMARCO/Aworldofonesown/Gian11.png"
       ]
     }
   ]

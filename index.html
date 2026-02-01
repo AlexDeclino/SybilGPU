@@ -304,43 +304,6 @@
             border-color: #ffff00;
         }
 
-        .video-container {
-            margin-top: 16px;
-            position: relative;
-            width: 100%;
-            aspect-ratio: 16/9;
-            overflow: hidden;
-        }
-
-        .video-container iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            filter: grayscale(100%) contrast(1.4) brightness(0.9);
-            mix-blend-mode: luminosity;
-        }
-
-        .video-container::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background:
-                repeating-linear-gradient(
-                    0deg,
-                    rgba(0,0,0,0.1) 0px,
-                    rgba(0,0,0,0.1) 1px,
-                    transparent 1px,
-                    transparent 3px
-                ),
-                url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-            opacity: 0.15;
-            pointer-events: none;
-            mix-blend-mode: overlay;
-        }
-
         .artist-info {
             font-size: 10px;
             color: #666;
@@ -413,10 +376,9 @@
 by
 ###[declino.systems]
 
+#10 !aworldof:1!aworldof:1:h
 
-
-
-
+#7 
 
 ⊛⊛</textarea>
 
@@ -439,6 +401,25 @@ by
                     <div class="select-group">
                         <label>Stroke <span id="strokeVal1">0</span></label>
                         <input type="range" id="strokeWidth1" min="0" max="50" value="0">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="select-group">
+                        <label>Line H <span id="lineHeightVal1">100</span>%</label>
+                        <input type="range" id="lineHeight1" min="50" max="200" value="100">
+                    </div>
+                    <div class="select-group">
+                        <label>Stretch X <span id="stretchXVal1">100</span>%</label>
+                        <input type="range" id="stretchX1" min="50" max="200" value="100">
+                    </div>
+                    <div class="select-group">
+                        <label>Stretch Y <span id="stretchYVal1">100</span>%</label>
+                        <input type="range" id="stretchY1" min="50" max="200" value="100">
+                    </div>
+                    <div class="select-group">
+                        <label>Kern <span id="kernelVal1">0</span></label>
+                        <input type="range" id="kernel1" min="-20" max="50" value="0">
                     </div>
                 </div>
             </div>
@@ -467,6 +448,25 @@ by
                         <input type="range" id="strokeWidth2" min="0" max="50" value="0">
                     </div>
                 </div>
+
+                <div class="row">
+                    <div class="select-group">
+                        <label>Line H <span id="lineHeightVal2">100</span>%</label>
+                        <input type="range" id="lineHeight2" min="50" max="200" value="100">
+                    </div>
+                    <div class="select-group">
+                        <label>Stretch X <span id="stretchXVal2">100</span>%</label>
+                        <input type="range" id="stretchX2" min="50" max="200" value="100">
+                    </div>
+                    <div class="select-group">
+                        <label>Stretch Y <span id="stretchYVal2">100</span>%</label>
+                        <input type="range" id="stretchY2" min="50" max="200" value="100">
+                    </div>
+                    <div class="select-group">
+                        <label>Kern <span id="kernelVal2">0</span></label>
+                        <input type="range" id="kernel2" min="-20" max="50" value="0">
+                    </div>
+                </div>
             </div>
 
             <div class="layer-panel" data-layer="3">
@@ -491,6 +491,25 @@ by
                     <div class="select-group">
                         <label>Stroke <span id="strokeVal3">0</span></label>
                         <input type="range" id="strokeWidth3" min="0" max="50" value="0">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="select-group">
+                        <label>Line H <span id="lineHeightVal3">100</span>%</label>
+                        <input type="range" id="lineHeight3" min="50" max="200" value="100">
+                    </div>
+                    <div class="select-group">
+                        <label>Stretch X <span id="stretchXVal3">100</span>%</label>
+                        <input type="range" id="stretchX3" min="50" max="200" value="100">
+                    </div>
+                    <div class="select-group">
+                        <label>Stretch Y <span id="stretchYVal3">100</span>%</label>
+                        <input type="range" id="stretchY3" min="50" max="200" value="100">
+                    </div>
+                    <div class="select-group">
+                        <label>Kern <span id="kernelVal3">0</span></label>
+                        <input type="range" id="kernel3" min="-20" max="50" value="0">
                     </div>
                 </div>
             </div>
@@ -534,6 +553,21 @@ by
         <div class="sidebar-right">
             <div class="sidebar-title">Image Library</div>
 
+            <div class="row">
+                <div class="select-group">
+                    <label>Year</label>
+                    <select id="filterYear"><option value="">All</option></select>
+                </div>
+                <div class="select-group">
+                    <label>Arc</label>
+                    <select id="filterArc"><option value="">All</option></select>
+                </div>
+                <div class="select-group">
+                    <label>Artist</label>
+                    <select id="filterArtist"><option value="">All</option></select>
+                </div>
+            </div>
+
             <div class="select-group">
                 <label>Collection</label>
                 <select id="collectionSelect"></select>
@@ -542,14 +576,6 @@ by
             <div class="artist-info" id="collectionInfo"></div>
 
             <div class="library-grid" id="imageLibrary"></div>
-
-            <div class="video-container">
-                <iframe
-                    src="https://www.youtube-nocookie.com/embed/videoseries?list=PLiSxK4vBTUcS5C6YZCv5OZ7VRH3vxbr1o&autoplay=1&mute=1&shuffle=1&loop=1&vq=small&rel=0&modestbranding=1"
-                    allow="autoplay; encrypted-media"
-                    allowfullscreen>
-                </iframe>
-            </div>
         </div>
     </div>
 
@@ -563,6 +589,9 @@ by
         const collectionSelect = document.getElementById('collectionSelect');
         const collectionInfo = document.getElementById('collectionInfo');
         const downloadBtn = document.getElementById('download');
+        const filterYear = document.getElementById('filterYear');
+        const filterArc = document.getElementById('filterArc');
+        const filterArtist = document.getElementById('filterArtist');
 
         // Layer elements
         const layers = [1, 2, 3].map(i => ({
@@ -570,7 +599,11 @@ by
             textColor: document.getElementById(`textColor${i}`),
             accentColor: document.getElementById(`accentColor${i}`),
             strokeColor: document.getElementById(`strokeColor${i}`),
-            strokeWidth: document.getElementById(`strokeWidth${i}`)
+            strokeWidth: document.getElementById(`strokeWidth${i}`),
+            lineHeight: document.getElementById(`lineHeight${i}`),
+            stretchX: document.getElementById(`stretchX${i}`),
+            stretchY: document.getElementById(`stretchY${i}`),
+            kernel: document.getElementById(`kernel${i}`)
         }));
 
         const userName = document.getElementById('userName');
@@ -580,9 +613,19 @@ by
         let libraryData = null;
         let allImages = {}; // { "collectionId:index": { img, path } }
         const recolorCache = new Map(); // Cache for recolored images
+        const MAX_CACHE_SIZE = 100;
 
-        // Size value 1-10 maps to 0.02 - 0.15 of canvas height
-        const getSizeFromValue = (val) => 0.02 + (val - 1) * 0.0144;
+        // Layout constants
+        const SIZE_BASE = 0.02;        // Min size as fraction of canvas height
+        const SIZE_STEP = 0.0144;      // Size increment per level
+        const FONT_RATIO = 0.85;       // Font size relative to line height
+        const LINE_GAP = 0.005;        // Gap between lines as fraction of height
+        const IMG_MAX_HEIGHT = 0.2;    // Max standalone image height
+        const IMG_MAX_WIDTH = 0.6;     // Max standalone image width
+        const IMG_GAP = 0.02;          // Gap after standalone image
+
+        // Size value 1-10 maps to SIZE_BASE - (SIZE_BASE + 9*SIZE_STEP) of canvas height
+        const getSizeFromValue = (val) => SIZE_BASE + (val - 1) * SIZE_STEP;
 
         // Layer tab switching
         document.querySelectorAll('.layer-tab').forEach(tab => {
@@ -679,10 +722,48 @@ by
             return name.toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 8);
         }
 
+        function populateFilters() {
+            const years = [...new Set(libraryData.collections.map(c => c.year))].sort();
+            const arcs = [...new Set(libraryData.collections.map(c => c.arc))].sort((a, b) => a - b);
+            const artists = [...new Set(libraryData.collections.map(c => c.artist))].sort();
+
+            filterYear.innerHTML = '<option value="">All</option>' + years.map(y => `<option value="${y}">${y}</option>`).join('');
+            filterArc.innerHTML = '<option value="">All</option>' + arcs.map(a => `<option value="${a}">Arc ${a}</option>`).join('');
+            filterArtist.innerHTML = '<option value="">All</option>' + artists.map(a => `<option value="${a}">${a}</option>`).join('');
+        }
+
+        function filterCollections() {
+            const year = filterYear.value;
+            const arc = filterArc.value;
+            const artist = filterArtist.value;
+
+            const filtered = libraryData.collections.filter(col => {
+                if (year && col.year != year) return false;
+                if (arc && col.arc != arc) return false;
+                if (artist && col.artist !== artist) return false;
+                return true;
+            });
+
+            collectionSelect.innerHTML = filtered.map(col => {
+                const origIndex = libraryData.collections.indexOf(col);
+                return `<option value="${origIndex}">${col.name}</option>`;
+            }).join('');
+
+            if (filtered.length > 0) {
+                showCollection(parseInt(collectionSelect.value));
+            } else {
+                imageLibrary.innerHTML = '';
+                collectionInfo.textContent = '';
+            }
+        }
+
         async function loadLibrary() {
             try {
                 const response = await fetch('library.json');
                 libraryData = await response.json();
+
+                // Populate filters
+                populateFilters();
 
                 // Populate collection dropdown
                 collectionSelect.innerHTML = libraryData.collections.map((col, i) =>
@@ -751,6 +832,10 @@ by
             showCollection(parseInt(e.target.value));
         });
 
+        filterYear.addEventListener('change', filterCollections);
+        filterArc.addEventListener('change', filterCollections);
+        filterArtist.addEventListener('change', filterCollections);
+
         function getExportDimensions() {
             const [w, h] = frameSize.value.split('x').map(Number);
             return { width: w, height: h };
@@ -783,8 +868,37 @@ by
             }
 
             tempCtx.putImageData(imageData, 0, 0);
+
+            // Evict oldest entries if cache is too large
+            if (recolorCache.size >= MAX_CACHE_SIZE) {
+                const firstKey = recolorCache.keys().next().value;
+                recolorCache.delete(firstKey);
+            }
             recolorCache.set(key, tempCanvas);
             return tempCanvas;
+        }
+
+        // Helper: Draw image with optional flip
+        function drawImageWithFlip(img, x, y, w, h, flipH, flipV) {
+            ctx.save();
+            if (flipH || flipV) {
+                ctx.translate(x + w / 2, y + h / 2);
+                ctx.scale(flipH ? -1 : 1, flipV ? -1 : 1);
+                ctx.drawImage(img, -w / 2, -h / 2, w, h);
+            } else {
+                ctx.drawImage(img, x, y, w, h);
+            }
+            ctx.restore();
+        }
+
+        // Helper: Parse size prefix from line (returns { size, text })
+        function parseSizePrefix(line) {
+            const numMatch = line.match(/^#(\d+)\s+(.*)$/);
+            if (numMatch) return { size: parseInt(numMatch[1]), text: numMatch[2] };
+            if (line.startsWith('###')) return { size: 3, text: line.slice(3) };
+            if (line.startsWith('##')) return { size: 5, text: line.slice(2) };
+            if (line.startsWith('#')) return { size: 8, text: line.slice(1) };
+            return { size: 5, text: line };
         }
 
         function renderLayer(layerIndex, w, h) {
@@ -794,7 +908,42 @@ by
             let y = 0;
             const stroke = parseInt(layer.strokeWidth.value);
 
+            // Layer defaults
+            const defaultLineHeightMult = parseInt(layer.lineHeight.value) / 100;
+            const defaultStretchX = parseInt(layer.stretchX.value) / 100;
+            const defaultStretchY = parseInt(layer.stretchY.value) / 100;
+            const defaultKern = parseInt(layer.kernel.value);
+
             lines.forEach((line) => {
+                // Parse per-line modifiers: #N:lh120:sx150:sy100:k10 text
+                let lineHeightMult = defaultLineHeightMult;
+                let stretchX = defaultStretchX;
+                let stretchY = defaultStretchY;
+                let kern = defaultKern;
+
+                // Check for modifiers in the line prefix
+                const modMatch = line.match(/^(#\d*)((?::[a-z]+\-?\d+)+)\s+(.*)$/);
+                if (modMatch) {
+                    const mods = modMatch[2].slice(1).split(':'); // Remove leading : and split
+                    mods.forEach(mod => {
+                        const m = mod.match(/^([a-z]+)(\-?\d+)$/);
+                        if (m) {
+                            const [, key, val] = m;
+                            if (key === 'lh') lineHeightMult = parseInt(val) / 100;
+                            else if (key === 'sx') stretchX = parseInt(val) / 100;
+                            else if (key === 'sy') stretchY = parseInt(val) / 100;
+                            else if (key === 'k') kern = parseInt(val);
+                        }
+                    });
+                    line = modMatch[1] + ' ' + modMatch[3]; // Reconstruct line without modifiers
+                }
+
+                // Apply per-line transformations
+                ctx.save();
+                ctx.letterSpacing = `${kern}px`;
+                ctx.translate(w / 2, 0);
+                ctx.scale(stretchX, stretchY);
+                ctx.translate(-w / 2, 0);
                 // Check for standalone image line: !colId:N or !colId:N:mods (c=color, h=flipH, v=flipV)
                 const imgOnlyMatch = line.match(/^!([a-z0-9]+:\d+)(?::([chv]+))?$/);
                 if (imgOnlyMatch) {
@@ -806,49 +955,23 @@ by
                     const imgData = allImages[imageRef];
                     if (imgData) {
                         const drawImg = keepColor ? imgData.img : recolorImage(imgData.img, layer.textColor.value, imageRef);
-                        const maxH = h * 0.2;
-                        const maxW = w * 0.6;
+                        const maxH = h * IMG_MAX_HEIGHT;
+                        const maxW = w * IMG_MAX_WIDTH;
                         const scale = Math.min(maxW / imgData.img.width, maxH / imgData.img.height);
                         const imgW = imgData.img.width * scale;
                         const imgH = imgData.img.height * scale;
-                        const drawX = (w - imgW) / 2;
-
-                        ctx.save();
-                        if (flipH || flipV) {
-                            ctx.translate(drawX + imgW / 2, y + imgH / 2);
-                            ctx.scale(flipH ? -1 : 1, flipV ? -1 : 1);
-                            ctx.drawImage(drawImg, -imgW / 2, -imgH / 2, imgW, imgH);
-                        } else {
-                            ctx.drawImage(drawImg, drawX, y, imgW, imgH);
-                        }
-                        ctx.restore();
-                        y += imgH + h * 0.02;
+                        drawImageWithFlip(drawImg, (w - imgW) / 2, y, imgW, imgH, flipH, flipV);
+                        y += (imgH + h * IMG_GAP) * lineHeightMult;
                     }
+                    ctx.restore();
                     return;
                 }
 
                 // Determine default size from line start
-                // Supports: #N text (N=1-10), # text (large), ## text (medium), ### text (small)
-                let defaultSizeValue = 5; // medium default
-                let text = line;
-
-                const numericSizeMatch = line.match(/^#(\d+)\s+(.*)$/);
-                if (numericSizeMatch) {
-                    defaultSizeValue = parseInt(numericSizeMatch[1]);
-                    text = numericSizeMatch[2];
-                } else if (line.startsWith('###')) {
-                    defaultSizeValue = 3;
-                    text = line.slice(3);
-                } else if (line.startsWith('##')) {
-                    defaultSizeValue = 5;
-                    text = line.slice(2);
-                } else if (line.startsWith('#')) {
-                    defaultSizeValue = 8;
-                    text = line.slice(1);
-                }
+                const { size: defaultSizeValue, text } = parseSizePrefix(line);
 
                 const defaultLineHeight = h * getSizeFromValue(defaultSizeValue);
-                const defaultFontSize = defaultLineHeight * 0.85;
+                const defaultFontSize = defaultLineHeight * FONT_RATIO;
 
                 // Handle full-line highlight box
                 const fullHighlight = text.match(/^\{(.+)\}$/);
@@ -871,7 +994,8 @@ by
                     ctx.fillStyle = bgColor.value;
                     ctx.fillText(text, w / 2, y);
 
-                    y += defaultLineHeight + h * 0.01;
+                    y += (defaultLineHeight + h * LINE_GAP * 2) * lineHeightMult;
+                    ctx.restore();
                     return;
                 }
 
@@ -937,7 +1061,7 @@ by
                 let totalWidth = 0;
                 parts.forEach(p => {
                     const lineHeight = h * getSizeFromValue(p.sizeValue);
-                    const fontSize = lineHeight * 0.85;
+                    const fontSize = lineHeight * FONT_RATIO;
                     ctx.font = `${fontSize}px "Arial Narrow", Arial, sans-serif`;
 
                     if (p.type === 'image') {
@@ -957,7 +1081,7 @@ by
                 // Render parts
                 parts.forEach(p => {
                     const lineHeight = h * getSizeFromValue(p.sizeValue);
-                    const fontSize = lineHeight * 0.85;
+                    const fontSize = lineHeight * FONT_RATIO;
                     const yOffset = (maxLineHeight - lineHeight) / 2; // Vertically center smaller text
                     ctx.font = `${fontSize}px "Arial Narrow", Arial, sans-serif`;
 
@@ -970,16 +1094,7 @@ by
                             const drawImg = keepColor ? imgData.img : recolorImage(imgData.img, layer.textColor.value, p.ref);
                             const scale = lineHeight / imgData.img.height;
                             const imgW = imgData.img.width * scale;
-
-                            ctx.save();
-                            if (flipH || flipV) {
-                                ctx.translate(x + imgW / 2, y + yOffset + lineHeight / 2);
-                                ctx.scale(flipH ? -1 : 1, flipV ? -1 : 1);
-                                ctx.drawImage(drawImg, -imgW / 2, -lineHeight / 2, imgW, lineHeight);
-                            } else {
-                                ctx.drawImage(drawImg, x, y + yOffset, imgW, lineHeight);
-                            }
-                            ctx.restore();
+                            drawImageWithFlip(drawImg, x, y + yOffset, imgW, lineHeight, flipH, flipV);
                             x += imgW + 4;
                         }
                     } else if (p.type === 'highlight') {
@@ -1009,7 +1124,8 @@ by
                     }
                 });
 
-                y += maxLineHeight + h * 0.005;
+                ctx.restore();
+                y += (maxLineHeight + h * LINE_GAP) * lineHeightMult;
             });
         }
 
@@ -1100,6 +1216,22 @@ by
             layer.strokeColor.addEventListener('input', render);
             layer.strokeWidth.addEventListener('input', () => {
                 document.getElementById(`strokeVal${i + 1}`).textContent = layer.strokeWidth.value;
+                render();
+            });
+            layer.lineHeight.addEventListener('input', () => {
+                document.getElementById(`lineHeightVal${i + 1}`).textContent = layer.lineHeight.value;
+                render();
+            });
+            layer.stretchX.addEventListener('input', () => {
+                document.getElementById(`stretchXVal${i + 1}`).textContent = layer.stretchX.value;
+                render();
+            });
+            layer.stretchY.addEventListener('input', () => {
+                document.getElementById(`stretchYVal${i + 1}`).textContent = layer.stretchY.value;
+                render();
+            });
+            layer.kernel.addEventListener('input', () => {
+                document.getElementById(`kernelVal${i + 1}`).textContent = layer.kernel.value;
                 render();
             });
         });
