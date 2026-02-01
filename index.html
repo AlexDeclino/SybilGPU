@@ -73,22 +73,6 @@
             margin-bottom: 4px;
         }
 
-        .help {
-            font-size: 11px;
-            color: #666;
-            background: #1a1a1a;
-            padding: 8px;
-            border-radius: 4px;
-            line-height: 1.5;
-        }
-
-        .help code {
-            background: #333;
-            padding: 1px 4px;
-            border-radius: 2px;
-            color: #ff00ff;
-        }
-
         .style-buttons {
             display: flex;
             gap: 4px;
@@ -544,9 +528,16 @@ by
             strokeWidth: document.getElementById(`strokeWidth${i}`)
         }));
 
+        const userName = document.getElementById('userName');
+        const projectName = document.getElementById('projectName');
+
         let currentLayer = 1;
         let libraryData = null;
         let allImages = {}; // { "collectionId:index": { img, path } }
+        const recolorCache = new Map(); // Cache for recolored images
+
+        // Size value 1-10 maps to 0.02 - 0.15 of canvas height
+        const getSizeFromValue = (val) => 0.02 + (val - 1) * 0.0144;
 
         // Layer tab switching
         document.querySelectorAll('.layer-tab').forEach(tab => {
@@ -653,22 +644,26 @@ by
                     `<option value="${i}">${col.name}</option>`
                 ).join('');
 
-                // Load ALL images from all collections
+                // Load ALL images from all collections in parallel
+                const loadPromises = [];
                 for (const col of libraryData.collections) {
                     const colId = getCollectionId(col.name);
-                    for (let i = 0; i < col.images.length; i++) {
-                        const src = col.images[i];
-                        const img = await new Promise((resolve) => {
+                    col.images.forEach((src, i) => {
+                        const promise = new Promise((resolve) => {
                             const image = new Image();
-                            image.onload = () => resolve(image);
+                            image.onload = () => resolve({ key: `${colId}:${i + 1}`, img: image, path: src });
                             image.onerror = () => resolve(null);
                             image.src = src;
                         });
-                        if (img) {
-                            allImages[`${colId}:${i + 1}`] = { img, path: src };
-                        }
-                    }
+                        loadPromises.push(promise);
+                    });
                 }
+                const results = await Promise.all(loadPromises);
+                results.forEach(result => {
+                    if (result) {
+                        allImages[result.key] = { img: result.img, path: result.path };
+                    }
+                });
 
                 // Show first collection
                 showCollection(0);
@@ -716,7 +711,12 @@ by
             return { width: w, height: h };
         }
 
-        function recolorImage(img, color) {
+        function recolorImage(img, color, cacheKey) {
+            const key = cacheKey + color;
+            if (recolorCache.has(key)) {
+                return recolorCache.get(key);
+            }
+
             const tempCanvas = document.createElement('canvas');
             const tempCtx = tempCanvas.getContext('2d');
             tempCanvas.width = img.width;
@@ -738,23 +738,16 @@ by
             }
 
             tempCtx.putImageData(imageData, 0, 0);
+            recolorCache.set(key, tempCanvas);
             return tempCanvas;
         }
 
         function renderLayer(layerIndex, w, h) {
             const layer = layers[layerIndex];
 
-            // Set round stroke joins to prevent pointy spikes
-            ctx.lineJoin = 'round';
-            ctx.lineCap = 'round';
-            ctx.miterLimit = 2;
-
             const lines = layer.text.value.split('\n');
             let y = 0;
             const stroke = parseInt(layer.strokeWidth.value);
-
-            // Size value 1-10 maps to 0.02 - 0.15 of canvas height
-            const getSizeFromValue = (val) => 0.02 + (val - 1) * 0.0144;
 
             lines.forEach((line) => {
                 // Check for standalone image line: !colId:N or !colId:N:mods (c=color, h=flipH, v=flipV)
@@ -767,7 +760,7 @@ by
                     const flipV = mods.includes('v');
                     const imgData = allImages[imageRef];
                     if (imgData) {
-                        const drawImg = keepColor ? imgData.img : recolorImage(imgData.img, layer.textColor.value);
+                        const drawImg = keepColor ? imgData.img : recolorImage(imgData.img, layer.textColor.value, imageRef);
                         const maxH = h * 0.2;
                         const maxW = w * 0.6;
                         const scale = Math.min(maxW / imgData.img.width, maxH / imgData.img.height);
@@ -929,7 +922,7 @@ by
                             const keepColor = p.mods && p.mods.includes('c');
                             const flipH = p.mods && p.mods.includes('h');
                             const flipV = p.mods && p.mods.includes('v');
-                            const drawImg = keepColor ? imgData.img : recolorImage(imgData.img, layer.textColor.value);
+                            const drawImg = keepColor ? imgData.img : recolorImage(imgData.img, layer.textColor.value, p.ref);
                             const scale = lineHeight / imgData.img.height;
                             const imgW = imgData.img.width * scale;
 
@@ -986,6 +979,11 @@ by
             ctx.fillStyle = bgColor.value;
             ctx.fillRect(0, 0, w, h);
 
+            // Set round stroke joins to prevent pointy spikes
+            ctx.lineJoin = 'round';
+            ctx.lineCap = 'round';
+            ctx.miterLimit = 2;
+
             // Render all 3 layers (layer 1 at bottom, layer 3 on top)
             for (let i = 0; i < 3; i++) {
                 renderLayer(i, w, h);
@@ -993,8 +991,6 @@ by
         }
 
         function download() {
-            const userName = document.getElementById('userName');
-            const projectName = document.getElementById('projectName');
             const user = userName.value.trim().toLowerCase();
             const project = projectName.value.trim().toLowerCase();
 
