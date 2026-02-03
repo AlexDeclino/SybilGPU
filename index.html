@@ -16,25 +16,104 @@
             flex-direction: column;
         }
 
-        .marquee {
+        .footer-bar {
             background: #ffff00;
             color: #000;
-            overflow: hidden;
-            white-space: nowrap;
-            padding: 8px 0;
+            padding: 8px 16px;
             font-size: 14px;
             font-weight: normal;
             letter-spacing: 1px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .marquee-inner {
-            display: inline-block;
-            animation: scroll 120s linear infinite;
+        .footer-bar .help-link {
+            cursor: pointer;
+            text-decoration: underline;
         }
 
-        @keyframes scroll {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
+        .footer-bar .help-link:hover {
+            opacity: 0.7;
+        }
+
+        .help-popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .help-popup.active {
+            display: flex;
+        }
+
+        .help-content {
+            background: #1a1a1a;
+            color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            border: 2px solid #ffff00;
+        }
+
+        .help-close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #fff;
+            background: none;
+            border: none;
+            width: auto;
+            padding: 0;
+            margin: 0;
+            text-transform: none;
+            letter-spacing: 0;
+        }
+
+        .help-close:hover {
+            color: #ffff00;
+            background: none;
+        }
+
+        .help-content h2 {
+            color: #ffff00;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+
+        .help-content h3 {
+            color: #ffff00;
+            margin: 20px 0 10px;
+            font-size: 14px;
+        }
+
+        .help-content p, .help-content li {
+            font-size: 13px;
+            line-height: 1.6;
+            color: #ccc;
+        }
+
+        .help-content ul {
+            margin-left: 20px;
+        }
+
+        .help-content code {
+            background: #333;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: monospace;
         }
 
         .main {
@@ -343,6 +422,7 @@
             cursor: pointer;
         }
 
+
         .symbols {
             background: #1a1a1a;
             padding: 8px;
@@ -419,10 +499,6 @@
     </style>
 </head>
 <body>
-    <div class="marquee">
-        <div class="marquee-inner" id="marqueeInner"></div>
-    </div>
-
     <div class="main">
         <div class="sidebar">
             <div class="main-tabs">
@@ -432,8 +508,7 @@
 
             <div class="main-panel active" data-main="design">
                 <div class="text-editors">
-                    <textarea id="text1" class="layer-text active" data-layer="1" placeholder="Layer 1 text...">
-⊛⊛
+                    <textarea id="text1" class="layer-text active" data-layer="1" placeholder="Layer 1 text...">⊛⊛
 
 #SYBIL GPU
 by
@@ -441,7 +516,7 @@ by
 
 #10 !aworldof:4!aworldof:4:h
 
-#7 
+#7
 
 ⊛⊛</textarea>
                     <textarea id="text2" class="layer-text" data-layer="2" placeholder="Layer 2 text..."></textarea>
@@ -643,6 +718,55 @@ by
         </div>
     </div>
 
+    <div class="footer-bar">
+        <span>SYBIL GRAPHICS PROCESSING UNIT</span>
+        <span><span class="help-link" id="helpLink">help</span> · v 0.0.0.1</span>
+    </div>
+
+    <div class="help-popup" id="helpPopup">
+        <div class="help-content">
+            <button class="help-close" id="helpClose">×</button>
+            <h2>SYBIL GPU - Help</h2>
+
+            <h3>Text Formatting</h3>
+            <ul>
+                <li><code>#N text</code> - Set text size (1-10), e.g., <code>#8 Hello</code></li>
+                <li><code>#</code>, <code>##</code>, <code>###</code> - Quick sizes (8, 5, 3)</li>
+                <li><code>[text]</code> - Highlight text with accent color</li>
+                <li><code>{text}</code> - Full box highlight</li>
+                <li><code>#N(text)</code> - Inline size change</li>
+            </ul>
+
+            <h3>Images</h3>
+            <ul>
+                <li><code>!colId:N</code> - Insert image from library</li>
+                <li><code>:h</code> - Flip horizontal</li>
+                <li><code>:v</code> - Flip vertical</li>
+                <li><code>:c</code> - Keep original colors</li>
+            </ul>
+
+            <h3>Line Modifiers</h3>
+            <ul>
+                <li><code>:lhN</code> - Line height (e.g., <code>:lh150</code> for 150%)</li>
+                <li><code>:sxN</code> - Stretch X (e.g., <code>:sx200</code>)</li>
+                <li><code>:syN</code> - Stretch Y</li>
+                <li><code>:kN</code> - Kerning/letter spacing</li>
+            </ul>
+
+            <h3>Layers</h3>
+            <p>Use L1, L2, L3 tabs to switch between layers. Layer 1 is at the bottom, Layer 3 is on top.</p>
+
+            <h3>Style Buttons</h3>
+            <ul>
+                <li><code>S</code> - Apply size to selection</li>
+                <li><code>[ ]</code> - Wrap selection in highlight</li>
+                <li><code>{ }</code> - Wrap selection in box</li>
+                <li><code>↔</code> / <code>↕</code> - Flip selected image</li>
+                <li><code>∗</code> - Toggle original colors on image</li>
+            </ul>
+        </div>
+    </div>
+
     <script>
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
@@ -766,7 +890,7 @@ by
                     return;
                 }
 
-                if (!selected) return; // Nothing selected
+                if (!selected) return;
 
                 let wrapped;
                 const style = btn.dataset.style;
@@ -1272,10 +1396,24 @@ by
 
         loadLibrary();
 
-        // Marquee text
-        const marqueeText = 'SYBIL GRAPHICS PROCESSING UNIT ★★★ ';
-        const marqueeInner = document.getElementById('marqueeInner');
-        marqueeInner.textContent = marqueeText.repeat(20);
+        // Help popup
+        const helpLink = document.getElementById('helpLink');
+        const helpPopup = document.getElementById('helpPopup');
+        const helpClose = document.getElementById('helpClose');
+
+        helpLink.addEventListener('click', () => {
+            helpPopup.classList.add('active');
+        });
+
+        helpClose.addEventListener('click', () => {
+            helpPopup.classList.remove('active');
+        });
+
+        helpPopup.addEventListener('click', (e) => {
+            if (e.target === helpPopup) {
+                helpPopup.classList.remove('active');
+            }
+        });
     </script>
 </body>
 </html>
