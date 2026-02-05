@@ -128,7 +128,7 @@
             display: flex;
             flex-direction: column;
             gap: 12px;
-            overflow-y: auto;
+            overflow: hidden;
             max-height: calc(100vh - 38px);
             background: #111;
         }
@@ -177,29 +177,6 @@
             border-color: #ffff00;
         }
 
-        .style-buttons input[type="number"] {
-            width: 50px;
-            padding: 8px 4px;
-            background: #1a1a1a;
-            border: 1px solid #333;
-            color: #fff;
-            font-family: 'Arial Narrow', Arial, sans-serif;
-            font-size: 12px;
-            text-align: center;
-            -moz-appearance: textfield;
-        }
-
-        .style-buttons input[type="number"]::-webkit-outer-spin-button,
-        .style-buttons input[type="number"]::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-
-        .style-buttons input[type="number"]:focus {
-            outline: none;
-            border-color: #555;
-        }
-
         .main-tabs {
             display: flex;
             gap: 0;
@@ -239,7 +216,10 @@
         }
 
         .main-panel.active {
-            display: block;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            overflow: hidden;
         }
 
         .layer-tabs {
@@ -314,7 +294,7 @@
 
         .color-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
             gap: 8px;
             margin-bottom: 8px;
         }
@@ -388,27 +368,59 @@
             transition: border-color 0.3s ease;
         }
 
-        .select-group input[type="range"] {
-            width: 100%;
-            height: 6px;
-            background: #333;
-            border-radius: 3px;
-            appearance: none;
-            cursor: pointer;
-            margin-top: 8px;
+        .value-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 6px;
         }
 
-        .select-group input[type="range"]::-webkit-slider-thumb {
-            appearance: none;
-            width: 14px;
-            height: 14px;
-            background: #ffff00;
-            border-radius: 50%;
+        .value-row label {
+            font-size: 10px;
+            text-transform: uppercase;
+            color: #666;
+            letter-spacing: 0.5px;
+        }
+
+        .value-controls {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .value-display {
+            font-size: 11px;
+            color: #fff;
+            min-width: 28px;
+            text-align: center;
+        }
+
+        .arrow-btn {
+            min-width: auto;
+            height: auto;
+            padding: 0;
+            margin: 0;
+            background: none;
+            border: none;
+            color: #666;
+            font-size: 10px;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-transform: none;
+            letter-spacing: 0;
+        }
+
+        .arrow-btn:hover {
+            color: #ffff00;
+            background: none;
         }
 
 
         .symbols {
+            flex: 1;
+            min-height: 0;
             background: #1a1a1a;
             padding: 8px;
             border-radius: 4px;
@@ -416,8 +428,12 @@
             font-size: 15px;
             cursor: pointer;
             user-select: none;
-            max-height: 100px;
             overflow-y: auto;
+            scrollbar-width: none;
+        }
+
+        .symbols::-webkit-scrollbar {
+            display: none;
         }
 
         .symbols span:hover {
@@ -508,21 +524,14 @@ by
 #10 !aworldof:4!aworldof:4:h
 
 #9 
-#3 v 0.0.1.3
-#3 2026-02-04
+#3 v 0.1.0.0
+#3 2026-02-05
 </textarea>
                     <textarea id="text2" class="layer-text" data-layer="2" placeholder="Layer 2 text..."></textarea>
                     <textarea id="text3" class="layer-text" data-layer="3" placeholder="Layer 3 text..."></textarea>
                 </div>
 
-                <div class="color-pick" style="margin-bottom: 8px;">
-                    <label>Background</label>
-                    <input type="color" id="bgColor" value="#ffffff">
-                </div>
-
             <div class="style-buttons">
-                <input type="number" id="sizeInput" min="0" max="50" value="8" title="Size value">
-                <button class="style-btn" data-style="size" title="Add size to line">S</button>
                 <button class="style-btn" data-style="highlight" title="Highlight">[&nbsp;]</button>
                 <button class="style-btn" data-style="box" title="Full box">{&nbsp;}</button>
                 <button class="style-btn img-btn" data-flip="h" title="Flip horizontal">↔</button>
@@ -540,33 +549,80 @@ by
                         <label>Accent</label>
                         <input type="color" id="accentColor1" value="#000000">
                     </div>
-                </div>
-                <div class="color-grid">
                     <div class="color-pick">
                         <label>Stroke</label>
                         <input type="color" id="strokeColor1" value="#000000">
                     </div>
-                    <div class="select-group">
-                        <label>Stroke <span id="strokeVal1">0</span></label>
-                        <input type="range" id="strokeWidth1" min="0" max="50" value="0">
+                    <div class="color-pick">
+                        <label>BG</label>
+                        <input type="color" id="bgColor" value="#ffffff">
                     </div>
                 </div>
 
-                <div class="select-group">
-                    <label>Line H <span id="lineHeightVal1">100</span>%</label>
-                    <input type="range" id="lineHeight1" min="50" max="200" value="100">
+                <div class="value-row">
+                    <label>Size</label>
+                    <div class="value-controls">
+                        <button class="arrow-btn size-btn" data-layer="1" data-dir="-1" data-step="10">&lt;&lt;</button>
+                        <button class="arrow-btn size-btn" data-layer="1" data-dir="-1">&lt;</button>
+                        <span class="value-display" id="sizeVal1">5</span>
+                        <button class="arrow-btn size-btn" data-layer="1" data-dir="1">&gt;</button>
+                        <button class="arrow-btn size-btn" data-layer="1" data-dir="1" data-step="10">&gt;&gt;</button>
+                    </div>
                 </div>
-                <div class="select-group">
-                    <label>Stretch X <span id="stretchXVal1">100</span>%</label>
-                    <input type="range" id="stretchX1" min="50" max="200" value="100">
+                <div class="value-row">
+                    <label>Stroke</label>
+                    <div class="value-controls">
+                        <button class="arrow-btn slider-btn" data-slider="strokeWidth1" data-display="strokeVal1" data-dir="-1" data-step="10">&lt;&lt;</button>
+                        <button class="arrow-btn slider-btn" data-slider="strokeWidth1" data-display="strokeVal1" data-dir="-1">&lt;</button>
+                        <span class="value-display" id="strokeVal1">0</span>
+                        <button class="arrow-btn slider-btn" data-slider="strokeWidth1" data-display="strokeVal1" data-dir="1">&gt;</button>
+                        <button class="arrow-btn slider-btn" data-slider="strokeWidth1" data-display="strokeVal1" data-dir="1" data-step="10">&gt;&gt;</button>
+                    </div>
+                    <input type="range" id="strokeWidth1" min="0" max="50" value="0" style="display:none">
                 </div>
-                <div class="select-group">
-                    <label>Stretch Y <span id="stretchYVal1">100</span>%</label>
-                    <input type="range" id="stretchY1" min="50" max="200" value="100">
+                <div class="value-row">
+                    <label>Line H</label>
+                    <div class="value-controls">
+                        <button class="arrow-btn mod-btn" data-layer="1" data-mod="lh" data-slider="lineHeight1" data-display="lineHeightVal1" data-dir="-1" data-step="10">&lt;&lt;</button>
+                        <button class="arrow-btn mod-btn" data-layer="1" data-mod="lh" data-slider="lineHeight1" data-display="lineHeightVal1" data-dir="-1">&lt;</button>
+                        <span class="value-display" id="lineHeightVal1">100</span>
+                        <button class="arrow-btn mod-btn" data-layer="1" data-mod="lh" data-slider="lineHeight1" data-display="lineHeightVal1" data-dir="1">&gt;</button>
+                        <button class="arrow-btn mod-btn" data-layer="1" data-mod="lh" data-slider="lineHeight1" data-display="lineHeightVal1" data-dir="1" data-step="10">&gt;&gt;</button>
+                    </div>
+                    <input type="range" id="lineHeight1" min="50" max="200" value="100" style="display:none">
                 </div>
-                <div class="select-group">
-                    <label>Kern <span id="kernelVal1">0</span></label>
-                    <input type="range" id="kernel1" min="-20" max="50" value="0">
+                <div class="value-row">
+                    <label>Stretch X</label>
+                    <div class="value-controls">
+                        <button class="arrow-btn mod-btn" data-layer="1" data-mod="sx" data-slider="stretchX1" data-display="stretchXVal1" data-dir="-1" data-step="10">&lt;&lt;</button>
+                        <button class="arrow-btn mod-btn" data-layer="1" data-mod="sx" data-slider="stretchX1" data-display="stretchXVal1" data-dir="-1">&lt;</button>
+                        <span class="value-display" id="stretchXVal1">100</span>
+                        <button class="arrow-btn mod-btn" data-layer="1" data-mod="sx" data-slider="stretchX1" data-display="stretchXVal1" data-dir="1">&gt;</button>
+                        <button class="arrow-btn mod-btn" data-layer="1" data-mod="sx" data-slider="stretchX1" data-display="stretchXVal1" data-dir="1" data-step="10">&gt;&gt;</button>
+                    </div>
+                    <input type="range" id="stretchX1" min="50" max="200" value="100" style="display:none">
+                </div>
+                <div class="value-row">
+                    <label>Stretch Y</label>
+                    <div class="value-controls">
+                        <button class="arrow-btn mod-btn" data-layer="1" data-mod="sy" data-slider="stretchY1" data-display="stretchYVal1" data-dir="-1" data-step="10">&lt;&lt;</button>
+                        <button class="arrow-btn mod-btn" data-layer="1" data-mod="sy" data-slider="stretchY1" data-display="stretchYVal1" data-dir="-1">&lt;</button>
+                        <span class="value-display" id="stretchYVal1">100</span>
+                        <button class="arrow-btn mod-btn" data-layer="1" data-mod="sy" data-slider="stretchY1" data-display="stretchYVal1" data-dir="1">&gt;</button>
+                        <button class="arrow-btn mod-btn" data-layer="1" data-mod="sy" data-slider="stretchY1" data-display="stretchYVal1" data-dir="1" data-step="10">&gt;&gt;</button>
+                    </div>
+                    <input type="range" id="stretchY1" min="50" max="200" value="100" style="display:none">
+                </div>
+                <div class="value-row">
+                    <label>Kern</label>
+                    <div class="value-controls">
+                        <button class="arrow-btn mod-btn" data-layer="1" data-mod="k" data-slider="kernel1" data-display="kernelVal1" data-dir="-1" data-step="10">&lt;&lt;</button>
+                        <button class="arrow-btn mod-btn" data-layer="1" data-mod="k" data-slider="kernel1" data-display="kernelVal1" data-dir="-1">&lt;</button>
+                        <span class="value-display" id="kernelVal1">0</span>
+                        <button class="arrow-btn mod-btn" data-layer="1" data-mod="k" data-slider="kernel1" data-display="kernelVal1" data-dir="1">&gt;</button>
+                        <button class="arrow-btn mod-btn" data-layer="1" data-mod="k" data-slider="kernel1" data-display="kernelVal1" data-dir="1" data-step="10">&gt;&gt;</button>
+                    </div>
+                    <input type="range" id="kernel1" min="-20" max="50" value="0" style="display:none">
                 </div>
             </div>
 
@@ -580,33 +636,76 @@ by
                         <label>Accent</label>
                         <input type="color" id="accentColor2" value="#00ffff">
                     </div>
-                </div>
-                <div class="color-grid">
                     <div class="color-pick">
                         <label>Stroke</label>
                         <input type="color" id="strokeColor2" value="#000000">
                     </div>
-                    <div class="select-group">
-                        <label>Stroke <span id="strokeVal2">0</span></label>
-                        <input type="range" id="strokeWidth2" min="0" max="50" value="0">
-                    </div>
                 </div>
 
-                <div class="select-group">
-                    <label>Line H <span id="lineHeightVal2">100</span>%</label>
-                    <input type="range" id="lineHeight2" min="50" max="200" value="100">
+                <div class="value-row">
+                    <label>Size</label>
+                    <div class="value-controls">
+                        <button class="arrow-btn size-btn" data-layer="2" data-dir="-1" data-step="10">&lt;&lt;</button>
+                        <button class="arrow-btn size-btn" data-layer="2" data-dir="-1">&lt;</button>
+                        <span class="value-display" id="sizeVal2">5</span>
+                        <button class="arrow-btn size-btn" data-layer="2" data-dir="1">&gt;</button>
+                        <button class="arrow-btn size-btn" data-layer="2" data-dir="1" data-step="10">&gt;&gt;</button>
+                    </div>
                 </div>
-                <div class="select-group">
-                    <label>Stretch X <span id="stretchXVal2">100</span>%</label>
-                    <input type="range" id="stretchX2" min="50" max="200" value="100">
+                <div class="value-row">
+                    <label>Stroke</label>
+                    <div class="value-controls">
+                        <button class="arrow-btn slider-btn" data-slider="strokeWidth2" data-display="strokeVal2" data-dir="-1" data-step="10">&lt;&lt;</button>
+                        <button class="arrow-btn slider-btn" data-slider="strokeWidth2" data-display="strokeVal2" data-dir="-1">&lt;</button>
+                        <span class="value-display" id="strokeVal2">0</span>
+                        <button class="arrow-btn slider-btn" data-slider="strokeWidth2" data-display="strokeVal2" data-dir="1">&gt;</button>
+                        <button class="arrow-btn slider-btn" data-slider="strokeWidth2" data-display="strokeVal2" data-dir="1" data-step="10">&gt;&gt;</button>
+                    </div>
+                    <input type="range" id="strokeWidth2" min="0" max="50" value="0" style="display:none">
                 </div>
-                <div class="select-group">
-                    <label>Stretch Y <span id="stretchYVal2">100</span>%</label>
-                    <input type="range" id="stretchY2" min="50" max="200" value="100">
+                <div class="value-row">
+                    <label>Line H</label>
+                    <div class="value-controls">
+                        <button class="arrow-btn mod-btn" data-layer="2" data-mod="lh" data-slider="lineHeight2" data-display="lineHeightVal2" data-dir="-1" data-step="10">&lt;&lt;</button>
+                        <button class="arrow-btn mod-btn" data-layer="2" data-mod="lh" data-slider="lineHeight2" data-display="lineHeightVal2" data-dir="-1">&lt;</button>
+                        <span class="value-display" id="lineHeightVal2">100</span>
+                        <button class="arrow-btn mod-btn" data-layer="2" data-mod="lh" data-slider="lineHeight2" data-display="lineHeightVal2" data-dir="1">&gt;</button>
+                        <button class="arrow-btn mod-btn" data-layer="2" data-mod="lh" data-slider="lineHeight2" data-display="lineHeightVal2" data-dir="1" data-step="10">&gt;&gt;</button>
+                    </div>
+                    <input type="range" id="lineHeight2" min="50" max="200" value="100" style="display:none">
                 </div>
-                <div class="select-group">
-                    <label>Kern <span id="kernelVal2">0</span></label>
-                    <input type="range" id="kernel2" min="-20" max="50" value="0">
+                <div class="value-row">
+                    <label>Stretch X</label>
+                    <div class="value-controls">
+                        <button class="arrow-btn mod-btn" data-layer="2" data-mod="sx" data-slider="stretchX2" data-display="stretchXVal2" data-dir="-1" data-step="10">&lt;&lt;</button>
+                        <button class="arrow-btn mod-btn" data-layer="2" data-mod="sx" data-slider="stretchX2" data-display="stretchXVal2" data-dir="-1">&lt;</button>
+                        <span class="value-display" id="stretchXVal2">100</span>
+                        <button class="arrow-btn mod-btn" data-layer="2" data-mod="sx" data-slider="stretchX2" data-display="stretchXVal2" data-dir="1">&gt;</button>
+                        <button class="arrow-btn mod-btn" data-layer="2" data-mod="sx" data-slider="stretchX2" data-display="stretchXVal2" data-dir="1" data-step="10">&gt;&gt;</button>
+                    </div>
+                    <input type="range" id="stretchX2" min="50" max="200" value="100" style="display:none">
+                </div>
+                <div class="value-row">
+                    <label>Stretch Y</label>
+                    <div class="value-controls">
+                        <button class="arrow-btn mod-btn" data-layer="2" data-mod="sy" data-slider="stretchY2" data-display="stretchYVal2" data-dir="-1" data-step="10">&lt;&lt;</button>
+                        <button class="arrow-btn mod-btn" data-layer="2" data-mod="sy" data-slider="stretchY2" data-display="stretchYVal2" data-dir="-1">&lt;</button>
+                        <span class="value-display" id="stretchYVal2">100</span>
+                        <button class="arrow-btn mod-btn" data-layer="2" data-mod="sy" data-slider="stretchY2" data-display="stretchYVal2" data-dir="1">&gt;</button>
+                        <button class="arrow-btn mod-btn" data-layer="2" data-mod="sy" data-slider="stretchY2" data-display="stretchYVal2" data-dir="1" data-step="10">&gt;&gt;</button>
+                    </div>
+                    <input type="range" id="stretchY2" min="50" max="200" value="100" style="display:none">
+                </div>
+                <div class="value-row">
+                    <label>Kern</label>
+                    <div class="value-controls">
+                        <button class="arrow-btn mod-btn" data-layer="2" data-mod="k" data-slider="kernel2" data-display="kernelVal2" data-dir="-1" data-step="10">&lt;&lt;</button>
+                        <button class="arrow-btn mod-btn" data-layer="2" data-mod="k" data-slider="kernel2" data-display="kernelVal2" data-dir="-1">&lt;</button>
+                        <span class="value-display" id="kernelVal2">0</span>
+                        <button class="arrow-btn mod-btn" data-layer="2" data-mod="k" data-slider="kernel2" data-display="kernelVal2" data-dir="1">&gt;</button>
+                        <button class="arrow-btn mod-btn" data-layer="2" data-mod="k" data-slider="kernel2" data-display="kernelVal2" data-dir="1" data-step="10">&gt;&gt;</button>
+                    </div>
+                    <input type="range" id="kernel2" min="-20" max="50" value="0" style="display:none">
                 </div>
             </div>
 
@@ -620,33 +719,76 @@ by
                         <label>Accent</label>
                         <input type="color" id="accentColor3" value="#ffff00">
                     </div>
-                </div>
-                <div class="color-grid">
                     <div class="color-pick">
                         <label>Stroke</label>
                         <input type="color" id="strokeColor3" value="#000000">
                     </div>
-                    <div class="select-group">
-                        <label>Stroke <span id="strokeVal3">0</span></label>
-                        <input type="range" id="strokeWidth3" min="0" max="50" value="0">
-                    </div>
                 </div>
 
-                <div class="select-group">
-                    <label>Line H <span id="lineHeightVal3">100</span>%</label>
-                    <input type="range" id="lineHeight3" min="50" max="200" value="100">
+                <div class="value-row">
+                    <label>Size</label>
+                    <div class="value-controls">
+                        <button class="arrow-btn size-btn" data-layer="3" data-dir="-1" data-step="10">&lt;&lt;</button>
+                        <button class="arrow-btn size-btn" data-layer="3" data-dir="-1">&lt;</button>
+                        <span class="value-display" id="sizeVal3">5</span>
+                        <button class="arrow-btn size-btn" data-layer="3" data-dir="1">&gt;</button>
+                        <button class="arrow-btn size-btn" data-layer="3" data-dir="1" data-step="10">&gt;&gt;</button>
+                    </div>
                 </div>
-                <div class="select-group">
-                    <label>Stretch X <span id="stretchXVal3">100</span>%</label>
-                    <input type="range" id="stretchX3" min="50" max="200" value="100">
+                <div class="value-row">
+                    <label>Stroke</label>
+                    <div class="value-controls">
+                        <button class="arrow-btn slider-btn" data-slider="strokeWidth3" data-display="strokeVal3" data-dir="-1" data-step="10">&lt;&lt;</button>
+                        <button class="arrow-btn slider-btn" data-slider="strokeWidth3" data-display="strokeVal3" data-dir="-1">&lt;</button>
+                        <span class="value-display" id="strokeVal3">0</span>
+                        <button class="arrow-btn slider-btn" data-slider="strokeWidth3" data-display="strokeVal3" data-dir="1">&gt;</button>
+                        <button class="arrow-btn slider-btn" data-slider="strokeWidth3" data-display="strokeVal3" data-dir="1" data-step="10">&gt;&gt;</button>
+                    </div>
+                    <input type="range" id="strokeWidth3" min="0" max="50" value="0" style="display:none">
                 </div>
-                <div class="select-group">
-                    <label>Stretch Y <span id="stretchYVal3">100</span>%</label>
-                    <input type="range" id="stretchY3" min="50" max="200" value="100">
+                <div class="value-row">
+                    <label>Line H</label>
+                    <div class="value-controls">
+                        <button class="arrow-btn mod-btn" data-layer="3" data-mod="lh" data-slider="lineHeight3" data-display="lineHeightVal3" data-dir="-1" data-step="10">&lt;&lt;</button>
+                        <button class="arrow-btn mod-btn" data-layer="3" data-mod="lh" data-slider="lineHeight3" data-display="lineHeightVal3" data-dir="-1">&lt;</button>
+                        <span class="value-display" id="lineHeightVal3">100</span>
+                        <button class="arrow-btn mod-btn" data-layer="3" data-mod="lh" data-slider="lineHeight3" data-display="lineHeightVal3" data-dir="1">&gt;</button>
+                        <button class="arrow-btn mod-btn" data-layer="3" data-mod="lh" data-slider="lineHeight3" data-display="lineHeightVal3" data-dir="1" data-step="10">&gt;&gt;</button>
+                    </div>
+                    <input type="range" id="lineHeight3" min="50" max="200" value="100" style="display:none">
                 </div>
-                <div class="select-group">
-                    <label>Kern <span id="kernelVal3">0</span></label>
-                    <input type="range" id="kernel3" min="-20" max="50" value="0">
+                <div class="value-row">
+                    <label>Stretch X</label>
+                    <div class="value-controls">
+                        <button class="arrow-btn mod-btn" data-layer="3" data-mod="sx" data-slider="stretchX3" data-display="stretchXVal3" data-dir="-1" data-step="10">&lt;&lt;</button>
+                        <button class="arrow-btn mod-btn" data-layer="3" data-mod="sx" data-slider="stretchX3" data-display="stretchXVal3" data-dir="-1">&lt;</button>
+                        <span class="value-display" id="stretchXVal3">100</span>
+                        <button class="arrow-btn mod-btn" data-layer="3" data-mod="sx" data-slider="stretchX3" data-display="stretchXVal3" data-dir="1">&gt;</button>
+                        <button class="arrow-btn mod-btn" data-layer="3" data-mod="sx" data-slider="stretchX3" data-display="stretchXVal3" data-dir="1" data-step="10">&gt;&gt;</button>
+                    </div>
+                    <input type="range" id="stretchX3" min="50" max="200" value="100" style="display:none">
+                </div>
+                <div class="value-row">
+                    <label>Stretch Y</label>
+                    <div class="value-controls">
+                        <button class="arrow-btn mod-btn" data-layer="3" data-mod="sy" data-slider="stretchY3" data-display="stretchYVal3" data-dir="-1" data-step="10">&lt;&lt;</button>
+                        <button class="arrow-btn mod-btn" data-layer="3" data-mod="sy" data-slider="stretchY3" data-display="stretchYVal3" data-dir="-1">&lt;</button>
+                        <span class="value-display" id="stretchYVal3">100</span>
+                        <button class="arrow-btn mod-btn" data-layer="3" data-mod="sy" data-slider="stretchY3" data-display="stretchYVal3" data-dir="1">&gt;</button>
+                        <button class="arrow-btn mod-btn" data-layer="3" data-mod="sy" data-slider="stretchY3" data-display="stretchYVal3" data-dir="1" data-step="10">&gt;&gt;</button>
+                    </div>
+                    <input type="range" id="stretchY3" min="50" max="200" value="100" style="display:none">
+                </div>
+                <div class="value-row">
+                    <label>Kern</label>
+                    <div class="value-controls">
+                        <button class="arrow-btn mod-btn" data-layer="3" data-mod="k" data-slider="kernel3" data-display="kernelVal3" data-dir="-1" data-step="10">&lt;&lt;</button>
+                        <button class="arrow-btn mod-btn" data-layer="3" data-mod="k" data-slider="kernel3" data-display="kernelVal3" data-dir="-1">&lt;</button>
+                        <span class="value-display" id="kernelVal3">0</span>
+                        <button class="arrow-btn mod-btn" data-layer="3" data-mod="k" data-slider="kernel3" data-display="kernelVal3" data-dir="1">&gt;</button>
+                        <button class="arrow-btn mod-btn" data-layer="3" data-mod="k" data-slider="kernel3" data-display="kernelVal3" data-dir="1" data-step="10">&gt;&gt;</button>
+                    </div>
+                    <input type="range" id="kernel3" min="-20" max="50" value="0" style="display:none">
                 </div>
                 </div>
 
@@ -708,12 +850,36 @@ by
             <button class="help-close" id="helpClose">×</button>
             <h2>SYBIL GPU - Help</h2>
 
+            <h3>Controls</h3>
+            <ul>
+                <li><code>&lt; &gt;</code> - Adjust value by 1</li>
+                <li><code>&lt;&lt; &gt;&gt;</code> - Adjust value by 10</li>
+                <li>With text focused: applies modifier to current line</li>
+                <li>Without focus: changes the global value</li>
+            </ul>
+
+            <h3>Style Buttons</h3>
+            <ul>
+                <li><code>[ ]</code> - Wrap selection in highlight</li>
+                <li><code>{ }</code> - Wrap selection in box</li>
+                <li><code>↔</code> / <code>↕</code> - Flip selected image</li>
+                <li><code>∗</code> - Toggle original colors on image</li>
+            </ul>
+
             <h3>Text Formatting</h3>
             <ul>
                 <li><code>#N text</code> - Set text size (e.g., <code>#8 Hello</code>)</li>
                 <li><code>[text]</code> - Highlight text with accent color</li>
                 <li><code>{text}</code> - Full box highlight</li>
                 <li><code>#N(text)</code> - Inline size change</li>
+            </ul>
+
+            <h3>Line Modifiers</h3>
+            <ul>
+                <li><code>:kN</code> - Kerning / letter spacing</li>
+                <li><code>:lhN</code> - Line height (e.g., <code>:lh150</code> for 150%)</li>
+                <li><code>:sxN</code> - Stretch X (e.g., <code>:sx200</code>)</li>
+                <li><code>:syN</code> - Stretch Y</li>
             </ul>
 
             <h3>Images</h3>
@@ -724,25 +890,8 @@ by
                 <li><code>:c</code> - Keep original colors</li>
             </ul>
 
-            <h3>Line Modifiers</h3>
-            <ul>
-                <li><code>:lhN</code> - Line height (e.g., <code>:lh150</code> for 150%)</li>
-                <li><code>:sxN</code> - Stretch X (e.g., <code>:sx200</code>)</li>
-                <li><code>:syN</code> - Stretch Y</li>
-                <li><code>:kN</code> - Kerning/letter spacing</li>
-            </ul>
-
             <h3>Layers</h3>
             <p>Use L1, L2, L3 tabs to switch between layers. Layer 1 is at the bottom, Layer 3 is on top.</p>
-
-            <h3>Style Buttons</h3>
-            <ul>
-                <li><code>S</code> - Apply size to selection</li>
-                <li><code>[ ]</code> - Wrap selection in highlight</li>
-                <li><code>{ }</code> - Wrap selection in box</li>
-                <li><code>↔</code> / <code>↕</code> - Flip selected image</li>
-                <li><code>∗</code> - Toggle original colors on image</li>
-            </ul>
         </div>
     </div>
 
@@ -863,23 +1012,6 @@ by
                 }
 
                 const style = btn.dataset.style;
-
-                // S button: insert #N at the beginning of the current line
-                if (style === 'size') {
-                    const sizeVal = document.getElementById('sizeInput').value;
-                    const prefix = `#${sizeVal} `;
-                    // Find the start of the current line
-                    let lineStart = start;
-                    while (lineStart > 0 && text[lineStart - 1] !== '\n') {
-                        lineStart--;
-                    }
-                    textEl.value = text.slice(0, lineStart) + prefix + text.slice(lineStart);
-                    textEl.focus();
-                    textEl.selectionStart = textEl.selectionEnd = start + prefix.length;
-                    render();
-                    return;
-                }
-
                 if (!selected) return;
 
                 let wrapped;
@@ -1330,9 +1462,43 @@ by
 
         loadSymbols();
 
+        // Read inline modifiers from current line and update displays
+        function updateModDisplays(layerIndex) {
+            const n = layerIndex + 1;
+            const layer = layers[layerIndex];
+            const textEl = layer.text;
+            const text = textEl.value;
+            const pos = textEl.selectionStart;
+
+            let lineStart = pos;
+            while (lineStart > 0 && text[lineStart - 1] !== '\n') lineStart--;
+            let lineEnd = pos;
+            while (lineEnd < text.length && text[lineEnd] !== '\n') lineEnd++;
+            const line = text.slice(lineStart, lineEnd);
+
+            const mods = { k: null, lh: null, sx: null, sy: null };
+            for (const key of Object.keys(mods)) {
+                const m = line.match(new RegExp(`:${key}(\\-?\\d+)`));
+                if (m) mods[key] = parseInt(m[1]);
+            }
+
+            // Size from #N prefix
+            const sizeMatch = line.match(/^#(\d+)/);
+            document.getElementById(`sizeVal${n}`).textContent = sizeMatch ? parseInt(sizeMatch[1]) : 5;
+
+            document.getElementById(`kernelVal${n}`).textContent = mods.k !== null ? mods.k : layer.kernel.value;
+            document.getElementById(`lineHeightVal${n}`).textContent = mods.lh !== null ? mods.lh : layer.lineHeight.value;
+            document.getElementById(`stretchXVal${n}`).textContent = mods.sx !== null ? mods.sx : layer.stretchX.value;
+            document.getElementById(`stretchYVal${n}`).textContent = mods.sy !== null ? mods.sy : layer.stretchY.value;
+        }
+
         // Add event listeners for all layer controls
         layers.forEach((layer, i) => {
-            layer.text.addEventListener('input', render);
+            layer.text.addEventListener('input', () => { render(); updateModDisplays(i); });
+            layer.text.addEventListener('click', () => updateModDisplays(i));
+            layer.text.addEventListener('keyup', (e) => {
+                if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Home','End'].includes(e.key)) updateModDisplays(i);
+            });
             layer.textColor.addEventListener('input', render);
             layer.accentColor.addEventListener('input', render);
             layer.strokeColor.addEventListener('input', render);
@@ -1361,6 +1527,110 @@ by
         bgColor.addEventListener('input', render);
         frameSize.addEventListener('change', render);
         downloadBtn.addEventListener('click', download);
+
+        // Size button handlers - always apply to current line
+        document.querySelectorAll('.size-btn').forEach(btn => {
+            btn.addEventListener('mousedown', e => e.preventDefault());
+            btn.addEventListener('click', () => {
+                const layerNum = parseInt(btn.dataset.layer);
+                const dir = parseInt(btn.dataset.dir);
+                const step = parseInt(btn.dataset.step || '1');
+                const textEl = layers[layerNum - 1].text;
+                const start = textEl.selectionStart;
+                const text = textEl.value;
+
+                let lineStart = start;
+                while (lineStart > 0 && text[lineStart - 1] !== '\n') lineStart--;
+                let lineEnd = start;
+                while (lineEnd < text.length && text[lineEnd] !== '\n') lineEnd++;
+
+                const line = text.slice(lineStart, lineEnd);
+                let newLine;
+                const sizeMatch = line.match(/^#(\d+)/);
+                if (sizeMatch) {
+                    const oldVal = parseInt(sizeMatch[1]);
+                    const newVal = Math.max(1, Math.min(50, oldVal + dir * step));
+                    newLine = `#${newVal}` + line.slice(sizeMatch[0].length);
+                } else {
+                    const newVal = Math.max(1, Math.min(50, 5 + dir * step));
+                    newLine = `#${newVal} ` + line;
+                }
+
+                textEl.value = text.slice(0, lineStart) + newLine + text.slice(lineEnd);
+                textEl.focus();
+                textEl.selectionStart = textEl.selectionEnd = start + (newLine.length - line.length > 0 ? newLine.length - line.length : 0);
+                render();
+                updateModDisplays(layerNum - 1);
+            });
+        });
+
+        // Stroke slider arrows (no inline modifier behavior)
+        document.querySelectorAll('.slider-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const slider = document.getElementById(btn.dataset.slider);
+                const dir = parseInt(btn.dataset.dir);
+                const step = parseInt(btn.dataset.step || '1');
+                const newVal = Math.max(parseInt(slider.min), Math.min(parseInt(slider.max), parseInt(slider.value) + dir * step));
+                slider.value = newVal;
+                document.getElementById(btn.dataset.display).textContent = newVal;
+                render();
+            });
+        });
+
+        // Modifier buttons (lh, sx, sy, k) - inline when textarea focused, global otherwise
+        document.querySelectorAll('.mod-btn').forEach(btn => {
+            btn.addEventListener('mousedown', e => e.preventDefault());
+            btn.addEventListener('click', () => {
+                const layerNum = parseInt(btn.dataset.layer);
+                const mod = btn.dataset.mod;
+                const dir = parseInt(btn.dataset.dir);
+                const step = parseInt(btn.dataset.step || '1');
+                const slider = document.getElementById(btn.dataset.slider);
+                const textEl = layers[layerNum - 1].text;
+
+                const start = textEl.selectionStart;
+                const end = textEl.selectionEnd;
+                const text = textEl.value;
+
+                if (document.activeElement === textEl || start !== end) {
+                    // Apply to current line as inline modifier
+                    let lineStart = start;
+                    while (lineStart > 0 && text[lineStart - 1] !== '\n') lineStart--;
+                    let lineEnd = start;
+                    while (lineEnd < text.length && text[lineEnd] !== '\n') lineEnd++;
+
+                    const line = text.slice(lineStart, lineEnd);
+                    const modRegex = new RegExp(`:${mod}(\\-?\\d+)`);
+                    let newLine;
+                    const existing = line.match(modRegex);
+                    if (existing) {
+                        const oldVal = parseInt(existing[1]);
+                        const newVal = Math.max(parseInt(slider.min), Math.min(parseInt(slider.max), oldVal + dir * step));
+                        newLine = line.replace(modRegex, `:${mod}${newVal}`);
+                    } else {
+                        const hashMatch = line.match(/^(#\d+)/);
+                        const newVal = parseInt(slider.value) + dir * step;
+                        const clampedVal = Math.max(parseInt(slider.min), Math.min(parseInt(slider.max), newVal));
+                        if (hashMatch) {
+                            newLine = hashMatch[1] + `:${mod}${clampedVal}` + line.slice(hashMatch[1].length);
+                        } else {
+                            newLine = `:${mod}${clampedVal} ` + line;
+                        }
+                    }
+
+                    textEl.value = text.slice(0, lineStart) + newLine + text.slice(lineEnd);
+                    textEl.focus();
+                    textEl.selectionStart = textEl.selectionEnd = start;
+                    render();
+                    updateModDisplays(layerNum - 1);
+                } else {
+                    const newVal = Math.max(parseInt(slider.min), Math.min(parseInt(slider.max), parseInt(slider.value) + dir * step));
+                    slider.value = newVal;
+                    document.getElementById(btn.dataset.display).textContent = newVal;
+                    render();
+                }
+            });
+        });
 
         loadLibrary();
 
