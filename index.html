@@ -138,10 +138,10 @@
             padding: 20px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            overflow-y: auto;
+            gap: 6px;
             max-height: calc(100vh - 38px);
             background: #111;
+            overflow: hidden;
         }
 
         .sidebar-title {
@@ -149,7 +149,7 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             color: #666;
-            margin-bottom: 4px;
+            margin-bottom: 0;
         }
 
         .style-buttons {
@@ -327,7 +327,7 @@
         }
 
         .select-group {
-            flex: 1;
+            flex: none;
         }
 
         .select-group select {
@@ -449,7 +449,11 @@
         .library-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
+            gap: 2px;
+            align-content: start;
+            overflow-y: auto;
+            flex: 1;
+            min-height: 0;
         }
 
         .library-grid img {

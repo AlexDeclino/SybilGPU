@@ -23,7 +23,7 @@ try:
     with open(OUTPUT_FILE, 'r') as f:
         existing = json.load(f)
         for col in existing.get('collections', []):
-            key = f"{col['artist']}-{col['year']}-{col['arc']}"
+            key = f"{col['artist']}-{col['name']}-{col['year']}-{col['arc']}"
             existing_titles[key] = col['name']
 except:
     pass
@@ -50,21 +50,27 @@ for year in sorted(os.listdir(LIBRARY_PATH)):
             if not os.path.isdir(artist_path):
                 continue
 
-            # Find all image files
-            images = []
-            for f in sorted(os.listdir(artist_path)):
-                if re.match(r'.*\.(png|jpg|jpeg|gif|svg)$', f, re.I):
-                    images.append(f'library/{year}/{arc}/{artist}/{f}')
+            # Scan collection subfolders
+            for collection in sorted(os.listdir(artist_path)):
+                col_path = os.path.join(artist_path, collection)
+                if not os.path.isdir(col_path):
+                    continue
 
-            if images:
-                key = f"{artist}-{year}-{arc_num}"
-                collections.append({
-                    'name': existing_titles.get(key, 'UNTITLED - edit library.json'),
-                    'artist': artist,
-                    'year': int(year),
-                    'arc': arc_num,
-                    'images': images
-                })
+                # Find all image files
+                images = []
+                for f in sorted(os.listdir(col_path)):
+                    if re.match(r'.*\.(png|jpg|jpeg|gif|svg)$', f, re.I):
+                        images.append(f'library/{year}/{arc}/{artist}/{collection}/{f}')
+
+                if images:
+                    key = f"{artist}-{collection}-{year}-{arc_num}"
+                    collections.append({
+                        'name': existing_titles.get(key, collection),
+                        'artist': artist,
+                        'year': int(year),
+                        'arc': arc_num,
+                        'images': images
+                    })
 
 # Sort by year desc, then arc
 collections.sort(key=lambda x: (-x['year'], x['arc']))
