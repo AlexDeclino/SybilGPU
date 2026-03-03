@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SybilGPU</title>
-    <link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -508,8 +507,6 @@
             max-height: calc(100vh - 78px);
             box-shadow: 0 0 40px rgba(0,0,0,0.5);
         }
-
-        .layer-bg-check { width: auto; margin-right: 4px; }
     </style>
 </head>
 <body>
@@ -525,7 +522,6 @@
                     <button class="layer-tab active" data-layer="1">L1</button>
                     <button class="layer-tab" data-layer="2">L2</button>
                     <button class="layer-tab" data-layer="3">L3</button>
-                    <button class="layer-tab" data-layer="4">L4</button>
                 </div>
 
                 <div class="text-editors">
@@ -543,7 +539,6 @@ by
 </textarea>
                     <textarea id="text2" class="layer-text" data-layer="2" placeholder="Layer 2 text..."></textarea>
                     <textarea id="text3" class="layer-text" data-layer="3" placeholder="Layer 3 text..."></textarea>
-                    <textarea id="text4" class="layer-text" data-layer="4" placeholder="Layer 4 text..."></textarea>
                 </div>
 
             <div class="layer-panel active" data-layer="1">
@@ -561,9 +556,8 @@ by
                         <input type="color" id="strokeColor1" value="#000000">
                     </div>
                     <div class="color-pick">
-                        <label>Fill</label>
-                        <input type="color" id="layerBg1" value="#ffffff">
-                        <input type="checkbox" id="layerBgEnabled1" class="layer-bg-check" checked>
+                        <label>BG</label>
+                        <input type="color" id="bgColor" value="#ffffff">
                     </div>
                 </div>
 
@@ -575,9 +569,6 @@ by
                     <button class="style-btn img-btn" data-flip="h" title="Flip horizontal">↔</button>
                     <button class="style-btn img-btn" data-flip="v" title="Flip vertical">↕</button>
                     <button class="style-btn img-btn" data-toggle="c" title="Original colors">∗</button>
-                </div>
-                <div class="style-buttons">
-                    <button class="style-btn randomize-btn" data-layer="1">randomize</button>
                 </div>
 
                 <div class="value-row">
@@ -661,11 +652,6 @@ by
                         <label>Stroke</label>
                         <input type="color" id="strokeColor2" value="#000000">
                     </div>
-                    <div class="color-pick">
-                        <label>Fill</label>
-                        <input type="color" id="layerBg2" value="#ffffff">
-                        <input type="checkbox" id="layerBgEnabled2" class="layer-bg-check">
-                    </div>
                 </div>
 
                 <div class="style-buttons">
@@ -676,9 +662,6 @@ by
                     <button class="style-btn img-btn" data-flip="h" title="Flip horizontal">↔</button>
                     <button class="style-btn img-btn" data-flip="v" title="Flip vertical">↕</button>
                     <button class="style-btn img-btn" data-toggle="c" title="Original colors">∗</button>
-                </div>
-                <div class="style-buttons">
-                    <button class="style-btn randomize-btn" data-layer="2">randomize</button>
                 </div>
 
                 <div class="value-row">
@@ -762,11 +745,6 @@ by
                         <label>Stroke</label>
                         <input type="color" id="strokeColor3" value="#000000">
                     </div>
-                    <div class="color-pick">
-                        <label>Fill</label>
-                        <input type="color" id="layerBg3" value="#ffffff">
-                        <input type="checkbox" id="layerBgEnabled3" class="layer-bg-check">
-                    </div>
                 </div>
 
                 <div class="style-buttons">
@@ -777,9 +755,6 @@ by
                     <button class="style-btn img-btn" data-flip="h" title="Flip horizontal">↔</button>
                     <button class="style-btn img-btn" data-flip="v" title="Flip vertical">↕</button>
                     <button class="style-btn img-btn" data-toggle="c" title="Original colors">∗</button>
-                </div>
-                <div class="style-buttons">
-                    <button class="style-btn randomize-btn" data-layer="3">randomize</button>
                 </div>
 
                 <div class="value-row">
@@ -848,107 +823,6 @@ by
                     <input type="hidden" id="kernel3" value="0" style="display:none">
                 </div>
                 </div>
-
-            <div class="layer-panel" data-layer="4">
-                <div class="color-grid">
-                    <div class="color-pick">
-                        <label>Text</label>
-                        <input type="color" id="textColor4" value="#000000">
-                    </div>
-                    <div class="color-pick">
-                        <label>Accent</label>
-                        <input type="color" id="accentColor4" value="#ff00ff">
-                    </div>
-                    <div class="color-pick">
-                        <label>Stroke</label>
-                        <input type="color" id="strokeColor4" value="#000000">
-                    </div>
-                    <div class="color-pick">
-                        <label>Fill</label>
-                        <input type="color" id="layerBg4" value="#ffffff">
-                        <input type="checkbox" id="layerBgEnabled4" class="layer-bg-check">
-                    </div>
-                </div>
-
-                <div class="style-buttons">
-                    <button class="style-btn" data-style="highlight" title="Highlight">[ highlight ]</button>
-                    <button class="style-btn" data-style="box" title="Full box">{ fullbox }</button>
-                </div>
-                <div class="style-buttons">
-                    <button class="style-btn img-btn" data-flip="h" title="Flip horizontal">↔</button>
-                    <button class="style-btn img-btn" data-flip="v" title="Flip vertical">↕</button>
-                    <button class="style-btn img-btn" data-toggle="c" title="Original colors">∗</button>
-                </div>
-                <div class="style-buttons">
-                    <button class="style-btn randomize-btn" data-layer="4">randomize</button>
-                </div>
-
-                <div class="value-row">
-                    <label>Size</label>
-                    <div class="value-controls">
-                        <button class="arrow-btn size-btn" data-layer="4" data-dir="-1" data-step="10">&lt;&lt;</button>
-                        <button class="arrow-btn size-btn" data-layer="4" data-dir="-1">&lt;</button>
-                        <span class="value-display" id="sizeVal4">5</span>
-                        <button class="arrow-btn size-btn" data-layer="4" data-dir="1">&gt;</button>
-                        <button class="arrow-btn size-btn" data-layer="4" data-dir="1" data-step="10">&gt;&gt;</button>
-                    </div>
-                </div>
-                <div class="value-row">
-                    <label>Stroke</label>
-                    <div class="value-controls">
-                        <button class="arrow-btn slider-btn" data-slider="strokeWidth4" data-display="strokeVal4" data-dir="-1" data-step="10">&lt;&lt;</button>
-                        <button class="arrow-btn slider-btn" data-slider="strokeWidth4" data-display="strokeVal4" data-dir="-1">&lt;</button>
-                        <span class="value-display" id="strokeVal4">0</span>
-                        <button class="arrow-btn slider-btn" data-slider="strokeWidth4" data-display="strokeVal4" data-dir="1">&gt;</button>
-                        <button class="arrow-btn slider-btn" data-slider="strokeWidth4" data-display="strokeVal4" data-dir="1" data-step="10">&gt;&gt;</button>
-                    </div>
-                    <input type="hidden" id="strokeWidth4" value="0" style="display:none">
-                </div>
-                <div class="value-row">
-                    <label>Line H</label>
-                    <div class="value-controls">
-                        <button class="arrow-btn mod-btn" data-layer="4" data-mod="lh" data-slider="lineHeight4" data-display="lineHeightVal4" data-dir="-1" data-step="10">&lt;&lt;</button>
-                        <button class="arrow-btn mod-btn" data-layer="4" data-mod="lh" data-slider="lineHeight4" data-display="lineHeightVal4" data-dir="-1">&lt;</button>
-                        <span class="value-display" id="lineHeightVal4">100</span>
-                        <button class="arrow-btn mod-btn" data-layer="4" data-mod="lh" data-slider="lineHeight4" data-display="lineHeightVal4" data-dir="1">&gt;</button>
-                        <button class="arrow-btn mod-btn" data-layer="4" data-mod="lh" data-slider="lineHeight4" data-display="lineHeightVal4" data-dir="1" data-step="10">&gt;&gt;</button>
-                    </div>
-                    <input type="hidden" id="lineHeight4" value="100" style="display:none">
-                </div>
-                <div class="value-row">
-                    <label>Stretch X</label>
-                    <div class="value-controls">
-                        <button class="arrow-btn mod-btn" data-layer="4" data-mod="sx" data-slider="stretchX4" data-display="stretchXVal4" data-dir="-1" data-step="10">&lt;&lt;</button>
-                        <button class="arrow-btn mod-btn" data-layer="4" data-mod="sx" data-slider="stretchX4" data-display="stretchXVal4" data-dir="-1">&lt;</button>
-                        <span class="value-display" id="stretchXVal4">100</span>
-                        <button class="arrow-btn mod-btn" data-layer="4" data-mod="sx" data-slider="stretchX4" data-display="stretchXVal4" data-dir="1">&gt;</button>
-                        <button class="arrow-btn mod-btn" data-layer="4" data-mod="sx" data-slider="stretchX4" data-display="stretchXVal4" data-dir="1" data-step="10">&gt;&gt;</button>
-                    </div>
-                    <input type="hidden" id="stretchX4" value="100" style="display:none">
-                </div>
-                <div class="value-row">
-                    <label>Stretch Y</label>
-                    <div class="value-controls">
-                        <button class="arrow-btn mod-btn" data-layer="4" data-mod="sy" data-slider="stretchY4" data-display="stretchYVal4" data-dir="-1" data-step="10">&lt;&lt;</button>
-                        <button class="arrow-btn mod-btn" data-layer="4" data-mod="sy" data-slider="stretchY4" data-display="stretchYVal4" data-dir="-1">&lt;</button>
-                        <span class="value-display" id="stretchYVal4">100</span>
-                        <button class="arrow-btn mod-btn" data-layer="4" data-mod="sy" data-slider="stretchY4" data-display="stretchYVal4" data-dir="1">&gt;</button>
-                        <button class="arrow-btn mod-btn" data-layer="4" data-mod="sy" data-slider="stretchY4" data-display="stretchYVal4" data-dir="1" data-step="10">&gt;&gt;</button>
-                    </div>
-                    <input type="hidden" id="stretchY4" value="100" style="display:none">
-                </div>
-                <div class="value-row">
-                    <label>Kern</label>
-                    <div class="value-controls">
-                        <button class="arrow-btn mod-btn" data-layer="4" data-mod="k" data-slider="kernel4" data-display="kernelVal4" data-dir="-1" data-step="10">&lt;&lt;</button>
-                        <button class="arrow-btn mod-btn" data-layer="4" data-mod="k" data-slider="kernel4" data-display="kernelVal4" data-dir="-1">&lt;</button>
-                        <span class="value-display" id="kernelVal4">0</span>
-                        <button class="arrow-btn mod-btn" data-layer="4" data-mod="k" data-slider="kernel4" data-display="kernelVal4" data-dir="1">&gt;</button>
-                        <button class="arrow-btn mod-btn" data-layer="4" data-mod="k" data-slider="kernel4" data-display="kernelVal4" data-dir="1" data-step="10">&gt;&gt;</button>
-                    </div>
-                    <input type="hidden" id="kernel4" value="0" style="display:none">
-                </div>
-            </div>
 
                 <div class="symbols" id="symbols"></div>
             </div>
@@ -1047,17 +921,17 @@ by
                 <li><code>:h</code> - Flip horizontal</li>
                 <li><code>:v</code> - Flip vertical</li>
                 <li><code>:c</code> - Keep original colors</li>
-                <li><code>:m</code> - Use as mask (cuts holes in layer)</li>
             </ul>
 
             <h3>Layers</h3>
-            <p>Use L1, L2, L3, L4 tabs to switch between layers. Layer 1 is at the bottom, Layer 4 is on top.</p>
+            <p>Use L1, L2, L3 tabs to switch between layers. Layer 1 is at the bottom, Layer 3 is on top.</p>
         </div>
     </div>
 
     <script>
         const canvas = document.getElementById('canvas');
-        let ctx = canvas.getContext('2d');
+        const ctx = canvas.getContext('2d');
+        const bgColor = document.getElementById('bgColor');
         const frameSize = document.getElementById('frameSize');
         const symbols = document.getElementById('symbols');
         const imageLibrary = document.getElementById('imageLibrary');
@@ -1066,7 +940,7 @@ by
         const downloadBtn = document.getElementById('download');
 
         // Layer elements
-        const layers = [1, 2, 3, 4].map(i => ({
+        const layers = [1, 2, 3].map(i => ({
             text: document.getElementById(`text${i}`),
             textColor: document.getElementById(`textColor${i}`),
             accentColor: document.getElementById(`accentColor${i}`),
@@ -1075,10 +949,7 @@ by
             lineHeight: document.getElementById(`lineHeight${i}`),
             stretchX: document.getElementById(`stretchX${i}`),
             stretchY: document.getElementById(`stretchY${i}`),
-            kernel: document.getElementById(`kernel${i}`),
-            layerBgEnabled: document.getElementById(`layerBgEnabled${i}`),
-            layerBg: document.getElementById(`layerBg${i}`),
-            sizeVal: document.getElementById(`sizeVal${i}`)
+            kernel: document.getElementById(`kernel${i}`)
         }));
 
         const userName = document.getElementById('userName');
@@ -1161,7 +1032,7 @@ by
                 const toggle = btn.dataset.toggle;
                 if (flip || toggle) {
                     // Find image reference at cursor
-                    const imgRegex = /![a-z0-9]+:\d+(?::[hvcm]+)?/g;
+                    const imgRegex = /![a-z0-9]+:\d+(?::[hvc]+)?/g;
                     let match;
                     while ((match = imgRegex.exec(text)) !== null) {
                         if (start >= match.index && start <= match.index + match[0].length) {
@@ -1428,7 +1299,7 @@ by
                 }
 
                 // Estimate line height for stretchY centering
-                const imgPreCheck = line.match(/^!([a-z0-9]+:\d+)(?::([chvm]+))?$/);
+                const imgPreCheck = line.match(/^!([a-z0-9]+:\d+)(?::([chv]+))?$/);
                 let estimatedHeight;
                 if (imgPreCheck) {
                     const imgData = allImages[imgPreCheck[1]];
@@ -1455,25 +1326,22 @@ by
                 ctx.scale(stretchX, stretchY);
                 ctx.translate(-w / 2, -syCenter);
                 // Check for standalone image line: !colId:N or !colId:N:mods (c=color, h=flipH, v=flipV)
-                const imgOnlyMatch = line.match(/^!([a-z0-9]+:\d+)(?::([chvm]+))?$/);
+                const imgOnlyMatch = line.match(/^!([a-z0-9]+:\d+)(?::([chv]+))?$/);
                 if (imgOnlyMatch) {
                     const imageRef = imgOnlyMatch[1];
                     const mods = imgOnlyMatch[2] || '';
                     const keepColor = mods.includes('c');
                     const flipH = mods.includes('h');
                     const flipV = mods.includes('v');
-                    const isMask = mods.includes('m');
                     const imgData = allImages[imageRef];
                     if (imgData) {
-                        const drawImg = (keepColor || isMask) ? imgData.img : recolorImage(imgData.img, layer.textColor.value, imageRef);
+                        const drawImg = keepColor ? imgData.img : recolorImage(imgData.img, layer.textColor.value, imageRef);
                         const maxH = h * IMG_MAX_HEIGHT;
                         const maxW = w * IMG_MAX_WIDTH;
                         const scale = Math.min(maxW / imgData.img.width, maxH / imgData.img.height);
                         const imgW = imgData.img.width * scale;
                         const imgH = imgData.img.height * scale;
-                        if (isMask) ctx.globalCompositeOperation = 'destination-out';
                         drawImageWithFlip(drawImg, (w - imgW) / 2, y, imgW, imgH, flipH, flipV);
-                        if (isMask) ctx.globalCompositeOperation = 'source-over';
                         y += (imgH + h * IMG_GAP) * lineHeightMult;
                     }
                     ctx.restore();
@@ -1504,7 +1372,7 @@ by
                         ctx.lineWidth = stroke;
                         ctx.strokeText(text, w / 2, y);
                     }
-                    ctx.fillStyle = '#ffffff';
+                    ctx.fillStyle = bgColor.value;
                     ctx.fillText(text, w / 2, y);
 
                     y += (defaultLineHeight + h * LINE_GAP * 2) * lineHeightMult;
@@ -1513,7 +1381,7 @@ by
                 }
 
                 // Parse parts: inline sizes #N(text), sized highlights #N([text]), highlights [text], images !colId:N:mods
-                const partRegex = /(#(\d+)\(\[[^\]]+\]\)|#(\d+)\([^)]+\)|\[[^\]]+\]|~[^~]+~|![a-z0-9]+:\d+(?::[chvm]+)?)/g;
+                const partRegex = /(#(\d+)\(\[[^\]]+\]\)|#(\d+)\([^)]+\)|\[[^\]]+\]|![a-z0-9]+:\d+(?::[chv]+)?)/g;
                 const parts = [];
                 let lastIndex = 0;
                 let match;
@@ -1535,8 +1403,6 @@ by
                         parts.push({ type: 'text', content: numText[2], sizeValue: parseInt(numText[1]) });
                     } else if (m.startsWith('[')) {
                         parts.push({ type: 'highlight', content: m.slice(1, -1), sizeValue: defaultSizeValue });
-                    } else if (m.startsWith('~')) {
-                        parts.push({ type: 'fraktur', content: m.slice(1, -1), sizeValue: defaultSizeValue });
                     } else if (m.startsWith('!')) {
                         const imgParts = m.slice(1).split(':');
                         const ref = imgParts[0] + ':' + imgParts[1];
@@ -1561,9 +1427,7 @@ by
                 parts.forEach(p => {
                     const lineHeight = h * getSizeFromValue(p.sizeValue);
                     const fontSize = lineHeight * FONT_RATIO;
-                    ctx.font = p.type === 'fraktur'
-                        ? `${fontSize}px "UnifrakturCook", cursive`
-                        : `${fontSize}px "Arial Narrow", Arial, sans-serif`;
+                    ctx.font = `${fontSize}px "Arial Narrow", Arial, sans-serif`;
 
                     if (p.type === 'image') {
                         const imgData = allImages[p.ref];
@@ -1584,9 +1448,7 @@ by
                     const lineHeight = h * getSizeFromValue(p.sizeValue);
                     const fontSize = lineHeight * FONT_RATIO;
                     const yOffset = (maxLineHeight - lineHeight) / 2; // Vertically center smaller text
-                    ctx.font = p.type === 'fraktur'
-                        ? `${fontSize}px "UnifrakturCook", cursive`
-                        : `${fontSize}px "Arial Narrow", Arial, sans-serif`;
+                    ctx.font = `${fontSize}px "Arial Narrow", Arial, sans-serif`;
 
                     if (p.type === 'image') {
                         const imgData = allImages[p.ref];
@@ -1594,13 +1456,10 @@ by
                             const keepColor = p.mods && p.mods.includes('c');
                             const flipH = p.mods && p.mods.includes('h');
                             const flipV = p.mods && p.mods.includes('v');
-                            const isMask = p.mods && p.mods.includes('m');
-                            const drawImg = (keepColor || isMask) ? imgData.img : recolorImage(imgData.img, layer.textColor.value, p.ref);
+                            const drawImg = keepColor ? imgData.img : recolorImage(imgData.img, layer.textColor.value, p.ref);
                             const scale = lineHeight / imgData.img.height;
                             const imgW = imgData.img.width * scale;
-                            if (isMask) ctx.globalCompositeOperation = 'destination-out';
                             drawImageWithFlip(drawImg, x, y + yOffset, imgW, lineHeight, flipH, flipV);
-                            if (isMask) ctx.globalCompositeOperation = 'source-over';
                             x += imgW + 4;
                         }
                     } else if (p.type === 'highlight') {
@@ -1614,7 +1473,7 @@ by
                             ctx.lineWidth = stroke;
                             ctx.strokeText(p.content, x, y + yOffset);
                         }
-                        ctx.fillStyle = '#ffffff';
+                        ctx.fillStyle = bgColor.value;
                         ctx.fillText(p.content, x, y + yOffset);
                         x += tw + lineHeight * 0.2;
                     } else {
@@ -1641,33 +1500,13 @@ by
             canvas.width = w;
             canvas.height = h;
 
+            ctx.fillStyle = bgColor.value;
+            ctx.fillRect(0, 0, w, h);
             ctx.lineJoin = 'round';
             ctx.lineCap = 'round';
             ctx.miterLimit = 2;
 
-            const mainCtx = ctx;
-            for (let i = 0; i < 4; i++) {
-                const off = document.createElement('canvas');
-                off.width = w; off.height = h;
-                const offCtx = off.getContext('2d');
-
-                // Fill layer background if enabled
-                if (layers[i].layerBgEnabled.checked) {
-                    offCtx.fillStyle = layers[i].layerBg.value;
-                    offCtx.fillRect(0, 0, w, h);
-                }
-
-                // Render text onto offscreen canvas
-                offCtx.lineJoin = 'round';
-                offCtx.lineCap = 'round';
-                offCtx.miterLimit = 2;
-                ctx = offCtx;
-                renderLayer(i, w, h);
-                ctx = mainCtx;
-
-                mainCtx.drawImage(off, 0, 0);
-            }
-            ctx = mainCtx;
+            for (let i = 0; i < 3; i++) renderLayer(i, w, h);
         }
 
         function download() {
@@ -1787,10 +1626,9 @@ by
                 document.getElementById(`kernelVal${i + 1}`).textContent = layer.kernel.value;
                 render();
             });
-            layer.layerBgEnabled.addEventListener('change', render);
-            layer.layerBg.addEventListener('input', render);
         });
 
+        bgColor.addEventListener('input', render);
         frameSize.addEventListener('change', render);
         downloadBtn.addEventListener('click', download);
 
@@ -1956,29 +1794,6 @@ by
         });
 
         helpPopup.classList.add('active');
-
-        // Randomize font
-        document.querySelectorAll('.randomize-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const layerNum = parseInt(btn.dataset.layer);
-                const textEl = layers[layerNum - 1].text;
-                const lines = textEl.value.split('\n').map(line => {
-                    return line.split(' ').map(token => {
-                        // Strip existing ~ wrappers
-                        const clean = token.replace(/~([^~]+)~/g, '$1');
-                        // Skip empty tokens or special syntax tokens
-                        if (!clean || /^[#\[{\!~]/.test(clean)) return clean;
-                        // Apply ~ to random individual letters
-                        return clean.split('').map(ch => {
-                            if (!/[a-zA-Z]/.test(ch)) return ch;
-                            return Math.random() > 0.5 ? `~${ch}~` : ch;
-                        }).join('');
-                    }).join(' ');
-                });
-                textEl.value = lines.join('\n');
-                render();
-            });
-        });
     </script>
 </body>
 </html>
